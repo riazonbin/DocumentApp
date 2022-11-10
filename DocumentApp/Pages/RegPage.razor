@@ -1,0 +1,61 @@
+﻿@page "/regPage"
+@using DocumentApp.Data
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
+
+<h1>Registration form</h1>
+<div>
+    <label>Логин:</label> <input placeholder="Login" @bind-value="@login"></input>
+    <br /><br />
+    <label>Пароль:</label> <input placeholder="Password" @bind-value="@password"></input>
+    <br /><br />
+    <label>Повторите пароль:</label> <input placeholder="Repeat password" input @bind-value="@checkPassword"></input>
+    <br /><br />
+    <label>Email:</label> <input placeholder="Email" @bind-value="@email"></input>
+    <br /><br />
+    <label>Имя:</label> <input placeholder="Login" @bind-value="@name"></input>
+    <br /><br />
+    <label>Роль</label> 
+    <select>
+        <option value="Заказчик">Заказчик</option>
+        <option value="Застройщик">Застройщик</option>
+        <option value="Проектировщик">Проектировщик</option>
+    </select>
+    <br /><br />
+    <button class="btn btn-primary mb-3" type="submit" @onclick="() => AddToDb() ">Sign Up</button>
+</div>
+
+@code {
+    string name = "";
+    string login = "";
+    string password = "";
+    string email = "";
+
+    string checkPassword = "";
+
+    User user = new User();
+
+    private async void AddToDb()
+    {
+        if (String.IsNullOrEmpty(user.Email) || String.IsNullOrEmpty(user.FirstName) || String.IsNullOrEmpty(user.LastName)
+    || String.IsNullOrEmpty(user.Login) || String.IsNullOrEmpty(user.Password) || checkPassword == "")
+        {
+            await JS.InvokeVoidAsync("alert", "Not all fields are written!");
+            return;
+        }
+
+        if (checkPassword != user.Password)
+        {
+            await JS.InvokeVoidAsync("alert", "Passwords are not the same!");
+            return;
+        }
+        if (mongoConnection.FindByLogin(user.Login) is not null)
+        {
+            await JS.InvokeVoidAsync("alert", "Such login already exists!");
+            return;
+        }
+
+        mongoConnection.AddToDataBase(user);
+        StateHasChanged();
+    }
+}

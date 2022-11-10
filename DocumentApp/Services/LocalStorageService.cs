@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace DocumentApp.Services
 {
-    public class LocalStorageService
+    public class LocalStorageService : ILocalStorageService
     {
         private readonly IJSRuntime _jsRuntime;
 

@@ -10,7 +10,7 @@ namespace DocumentApp.Services
         public void AddToDataBase(User user)
         {
             var client = new MongoClient("mongodb://localhost");
-            var database = client.GetDatabase("NewBlazorTestZaripov");
+            var database = client.GetDatabase("DocumentApp");
             var collection = database.GetCollection<User>("UserCollection");
             collection.InsertOne(user);
         }
@@ -19,7 +19,7 @@ namespace DocumentApp.Services
         {
             var client = new MongoClient("mongodb://localhost");
             var filter = Builders<User>.Filter.Eq("Login", login);
-            var database = client.GetDatabase("NewBlazorTestZaripov");
+            var database = client.GetDatabase("DocumentApp");
             var collection = database.GetCollection<User>("UserCollection");
             return collection.Find(filter).FirstOrDefault();
         }
@@ -28,7 +28,7 @@ namespace DocumentApp.Services
         public IMongoCollection<User> GetCollection()
         {
             var client = new MongoClient("mongodb://localhost");
-            var database = client.GetDatabase("NewBlazorTestZaripov");
+            var database = client.GetDatabase("DocumentApp");
 
             return database.GetCollection<User>("UserCollection");
         }
