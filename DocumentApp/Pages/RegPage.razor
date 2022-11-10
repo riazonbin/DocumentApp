@@ -4,34 +4,53 @@
 @inject IJSRuntime JS
 
 <h1>Registration form</h1>
-<div>
-    <label>Логин:</label> <input placeholder="Login" @bind-value="@login"></input>
-    <br /><br />
-    <label>Пароль:</label> <input placeholder="Password" @bind-value="@password"></input>
-    <br /><br />
-    <label>Повторите пароль:</label> <input placeholder="Repeat password" input @bind-value="@checkPassword"></input>
-    <br /><br />
-    <label>Email:</label> <input placeholder="Email" @bind-value="@email"></input>
-    <br /><br />
-    <label>Имя:</label> <input placeholder="Login" @bind-value="@name"></input>
-    <br /><br />
-    <label>Роль</label> 
-    <select>
-        <option value="Заказчик">Заказчик</option>
-        <option value="Застройщик">Застройщик</option>
-        <option value="Проектировщик">Проектировщик</option>
-    </select>
-    <br /><br />
-    <button class="btn btn-primary mb-3" type="submit" @onclick="() => AddToDb() ">Sign Up</button>
-</div>
+<form class="needs-validation" novalidate>
+    <div class="form-row">
+        <label>Логин:</label> <input placeholder="Login" class="form-control" @bind-value="@login" required></input>
+    <div class="valid-feedback">
+        Looks good!
+    </div>
+        <br /><br />
+        <label>Пароль:</label> <input placeholder="Password" @bind-value="@password" required></input>
+        <br /><br />
+        <label>Повторите пароль:</label> <input placeholder="Repeat password" input @bind-value="@checkPassword" required></input>
+        <br /><br />
+        <label>Email:</label> <input placeholder="Email" @bind-value="@email" required></input>
+        <br /><br />
+        <label>Имя:</label> <input placeholder="Login" @bind-value="@name" required></input>
+        <br /><br />
+        <label>Роль</label> 
+        <select id="roleSelector" @bind="@role">
+            <option value="Заказчик">Заказчик</option>
+            <option value="Застройщик">Застройщик</option>
+            <option value="Проектировщик">Проектировщик</option>
+        </select>
+        <br /><br />
+        @if(role == "Заказчик")
+        {
+            <CustomerComponent></CustomerComponent>
+        }
+        @if(role == "Застройщик")
+        {
+            <DeveloperComponent></DeveloperComponent>
+        }
+        @if(role == "Проектировщик")
+        {
+            <ProjecterComponent></ProjecterComponent>
+        }
+        <br /><br />
+        <button class="btn btn-primary mb-3" type="submit" @onclick="() => StateHasChanged() ">Sign Up</button>
+    </div>
+</form>
 
-@code {
+    @code {
     string name = "";
     string login = "";
     string password = "";
     string email = "";
 
     string checkPassword = "";
+    string role = "";
 
     User user = new User();
 

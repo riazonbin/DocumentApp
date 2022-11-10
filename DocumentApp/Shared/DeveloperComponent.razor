@@ -1,0 +1,23 @@
+﻿<div>
+    <label>Организация:</label> <input placeholder="Organisation" @bind-value="@devOrg"></input>
+    <br /><br />
+    <label>ОГРН:</label> <input placeholder="ОГРН" @bind-value="@OGRN"></input>
+    <br /><br />
+    <label>ИНН:</label> <input placeholder="ИНН" @bind-value="@INN"></input>
+    <br /><br />
+    <label>КПП:</label> <input placeholder="КПП" @bind-value="@KPP"></input>
+    <br /><br />
+    <label>Адрес:</label> <input placeholder="Адрес" @bind-value="@Adress"></input>
+    <br /><br />
+    <label>Глава исполкома:</label> <input placeholder="Глава исполкома" @bind-value="@Chief"></input>
+</div>
+
+
+@code {
+    string devOrg;
+    string OGRN;
+    string INN;
+    string KPP;
+    string Adress;
+    string Chief;
+}
