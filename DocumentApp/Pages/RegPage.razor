@@ -4,7 +4,7 @@
 @inject IJSRuntime JS
 
 <h1>Registration form</h1>
-<form class="row g-3">
+<EditForm class="row g-3" id="regForm" >
 
     <div class="col-md-4">
         <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@lastName" required></input>
@@ -28,6 +28,10 @@
 
     <div class="col-md-4">
         <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@email" required></input>
+    </div>
+
+        <div class="col-md-4">
+        <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@telephone" required></input>
     </div>
 
     <div class="col-md-4">
@@ -54,9 +58,9 @@
     }
     <br /><br />
     <div class="col-12">
-         <button class="btn btn-primary mb-3" type="submit" @onclick="() => AddToDb() ">Sign Up</button>
+         <button class="btn btn-primary mb-3" type="submit" @oninvalid="() => StateHasChanged()" @onclick="() => AddToDb() ">Sign Up</button>
     </div>
-</form>
+</EditForm>
 
 @code {
     string firstName = "";
@@ -64,9 +68,12 @@
     string login = "";
     string password = "";
     string email = "";
+    string telephone = "";
 
     string checkPassword = "";
     string role = "";
+
+    User currentUser = new User();
 
     CustomerComponent cc;
 
@@ -74,10 +81,10 @@
 
     ProjecterComponent pc;
 
+
     private async void AddToDb()
     {
-        if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName)
-    || String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password) || checkPassword == "" || role == "")
+        if (!IsFulledFields())
         {
             await JS.InvokeVoidAsync("alert", "Not all fields are written!");
             return;
@@ -96,8 +103,34 @@
 
         if(role == "Заказчик")
         {
+            mongoConnection.AddToDataBase(new Customer(login, password, firstName, lastName, email, 
+                telephone, Enums.RolesEnum.Customer, cc.department));
+        }
+        else if (role == "Застройщик")
+        {
+            mongoConnection.AddToDataBase(new Developer(login, password, firstName, lastName, email,
+                telephone, Enums.RolesEnum.Developer, dc.devOrg, dc.OGRN, dc.INN, dc.KPP, 
+                dc.address, dc.chief));
+        }
+        else if (role == "Проектировщик")
+        {
+            mongoConnection.AddToDataBase(new Projecter(login, password, firstName, lastName, email,
+                telephone, Enums.RolesEnum.Projecter, pc.projectOrganisation, pc.OGRN, pc.INN, pc.KPP, pc.address,
+                pc.director, pc.mainEngineer));
         }
 
         StateHasChanged();
     }
+
+    private bool IsFulledFields()
+    {
+        if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName)
+        || String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(telephone) ||
+        checkPassword == "" || role == "")
+        {
+            return false;
+        }
+        return true;
+    }
+
 }

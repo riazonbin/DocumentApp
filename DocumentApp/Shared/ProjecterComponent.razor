@@ -1,6 +1,6 @@
 ﻿<div class="row g-3">
     <div class="col-md-4">
-        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@devOrg" required></input>
+        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@projectOrganisation" required></input>
     </div>
 
     <div class="col-md-4">
@@ -31,7 +31,7 @@
 
 
 @code {
-    public string devOrg;
+    public string projectOrganisation;
     public string OGRN;
     public string INN;
     public string KPP;
