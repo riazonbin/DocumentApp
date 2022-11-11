@@ -25,8 +25,8 @@
                 <p>Phone number: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Telephone))</p>
                 <p>Department: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Department))</p>
             </div>
-            <button @onclick="() => LoginOut()">Login out</button>
-            <button @onclick="() => ChangeData()">Change data</button>
+            <button class="btn btn-primary mb-3" @onclick="() => LoginOut()">Login out</button>
+            <button class="btn btn-primary mb-3" @onclick="() => ChangeData()">Change data</button>
         </div>   
     }
     @if (userService.currentUser.Role == Enums.RolesEnum.Developer)
@@ -44,8 +44,8 @@
                 <p>КПП: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).KPP))</p>
                 <p>Глава исполкома: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Chief))</p>
             </div>
-            <button @onclick="() => LoginOut()">Login out</button>
-            <button @onclick="() => ChangeData()">Change data</button>
+            <button class="btn btn-primary mb-3" @onclick="() => LoginOut()">Login out</button>
+            <button class="btn btn-primary mb-3" @onclick="() => ChangeData()">Change data</button>
         </div>   
     }
 
@@ -65,14 +65,24 @@
                 <p>Главный инженер: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).MainEngineer))</p>
                 <p>Директор: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Director))</p>
             </div>
-            <button @onclick="() => LoginOut()">Login out</button>
-            <button @onclick="() => ChangeData()">Change data</button>
+            <button class="btn btn-primary mb-3" @onclick="() => LoginOut()">Login out</button>
+            <button class="btn btn-primary mb-3" @onclick="() => ChangeData()">Change data</button>
         </div>   
     }
 
     if(isChangingData && userService.currentUser.Role == Enums.RolesEnum.Developer)
     {
         <DeveloperComponent currentDeveloper="mongoConnection.FindDeveloperByLogin(userService.currentUser.Login)"></DeveloperComponent>
+    }
+
+    if (isChangingData && userService.currentUser.Role == Enums.RolesEnum.Projecter)
+    {
+        <ProjecterComponent currentProjecter="mongoConnection.FindProjecterByLogin(userService.currentUser.Login)"></ProjecterComponent>
+    }
+
+    if (isChangingData && userService.currentUser.Role == Enums.RolesEnum.Customer)
+    {
+        <CustomerComponent currentCustomer="mongoConnection.FindCustomerByLogin(userService.currentUser.Login)"></CustomerComponent>
     }
 }
 
