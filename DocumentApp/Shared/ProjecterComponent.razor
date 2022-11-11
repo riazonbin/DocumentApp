@@ -1,5 +1,41 @@
-﻿<h3>ProjecterComponent</h3>
+﻿<div class="row g-3">
+    <div class="col-md-4">
+        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@devOrg" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@OGRN" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@INN" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@KPP" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@address" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Директор:</label> <input placeholder="Директор" class="form-control" @bind-value="@director" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Главеный инженер:</label> <input placeholder="Глав.инженер" class="form-control" @bind-value="@mainEngineer" required></input>
+    </div>
+
+</div>
+
 
 @code {
-
+    public string devOrg;
+    public string OGRN;
+    public string INN;
+    public string KPP;
+    public string address;
+    public string director;
+    public string mainEngineer;
 }

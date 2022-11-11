@@ -4,47 +4,63 @@
 @inject IJSRuntime JS
 
 <h1>Registration form</h1>
-<form class="needs-validation" novalidate>
-    <div class="form-row">
-        <label>Логин:</label> <input placeholder="Login" class="form-control" @bind-value="@login" required></input>
-    <div class="valid-feedback">
-        Looks good!
+<form class="row g-3">
+
+    <div class="col-md-4">
+        <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@lastName" required></input>
     </div>
-        <br /><br />
-        <label>Пароль:</label> <input placeholder="Password" @bind-value="@password" required></input>
-        <br /><br />
-        <label>Повторите пароль:</label> <input placeholder="Repeat password" input @bind-value="@checkPassword" required></input>
-        <br /><br />
-        <label>Email:</label> <input placeholder="Email" @bind-value="@email" required></input>
-        <br /><br />
-        <label>Имя:</label> <input placeholder="Login" @bind-value="@name" required></input>
-        <br /><br />
+
+    <div class="col-md-4">
+        <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@firstName" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@login" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@password" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@email" required></input>
+    </div>
+
+    <div class="col-md-4">
         <label>Роль</label> 
-        <select id="roleSelector" @bind="@role">
+        <select id="roleSelector" class="form-control" @bind="@role" required>
             <option value="Заказчик">Заказчик</option>
             <option value="Застройщик">Застройщик</option>
             <option value="Проектировщик">Проектировщик</option>
         </select>
-        <br /><br />
-        @if(role == "Заказчик")
-        {
-            <CustomerComponent></CustomerComponent>
-        }
-        @if(role == "Застройщик")
-        {
-            <DeveloperComponent></DeveloperComponent>
-        }
-        @if(role == "Проектировщик")
-        {
-            <ProjecterComponent></ProjecterComponent>
-        }
-        <br /><br />
-        <button class="btn btn-primary mb-3" type="submit" @onclick="() => StateHasChanged() ">Sign Up</button>
+    </div>
+
+
+    @if(role == "Заказчик")
+    {
+        <CustomerComponent @ref="cc"></CustomerComponent>
+    }
+    @if(role == "Застройщик")
+    {
+        <DeveloperComponent @ref="dc"></DeveloperComponent>
+    }
+    @if(role == "Проектировщик")
+    {
+        <ProjecterComponent @ref="pc"></ProjecterComponent>
+    }
+    <br /><br />
+    <div class="col-12">
+         <button class="btn btn-primary mb-3" type="submit" @onclick="() => AddToDb() ">Sign Up</button>
     </div>
 </form>
 
-    @code {
-    string name = "";
+@code {
+    string firstName = "";
+    string lastName = "";
     string login = "";
     string password = "";
     string email = "";
@@ -52,29 +68,36 @@
     string checkPassword = "";
     string role = "";
 
-    User user = new User();
+    CustomerComponent cc;
+
+    DeveloperComponent dc;
+
+    ProjecterComponent pc;
 
     private async void AddToDb()
     {
-        if (String.IsNullOrEmpty(user.Email) || String.IsNullOrEmpty(user.FirstName) || String.IsNullOrEmpty(user.LastName)
-    || String.IsNullOrEmpty(user.Login) || String.IsNullOrEmpty(user.Password) || checkPassword == "")
+        if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName)
+    || String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password) || checkPassword == "" || role == "")
         {
             await JS.InvokeVoidAsync("alert", "Not all fields are written!");
             return;
         }
 
-        if (checkPassword != user.Password)
+        if (checkPassword != password)
         {
             await JS.InvokeVoidAsync("alert", "Passwords are not the same!");
             return;
         }
-        if (mongoConnection.FindByLogin(user.Login) is not null)
+        if (mongoConnection.FindByLogin(login) is not null)
         {
             await JS.InvokeVoidAsync("alert", "Such login already exists!");
             return;
         }
 
-        mongoConnection.AddToDataBase(user);
+        if(role == "Заказчик")
+        {
+        }
+
         StateHasChanged();
     }
 }

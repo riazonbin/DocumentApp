@@ -1,4 +1,14 @@
-﻿<label>Отдел:</label> <input placeholder="Department" @bind-value="@department"></input>
+﻿<div class="row g-3">
+    <div class="col-md-4">
+        <label>Отдел:</label> 
+        <select placeholder="Organisation" class="form-control" @bind="@department" required>
+            <option value="Газификация">Газификация</option>
+            <option value="Водоснабжение">Водоснабжение</option>
+        </select>
+    </div>
+</div>
+
+
 @code {
-    string department;
+    public string department;
 }

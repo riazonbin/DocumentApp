@@ -1,23 +1,36 @@
-﻿<div>
-    <label>Организация:</label> <input placeholder="Organisation" @bind-value="@devOrg"></input>
-    <br /><br />
-    <label>ОГРН:</label> <input placeholder="ОГРН" @bind-value="@OGRN"></input>
-    <br /><br />
-    <label>ИНН:</label> <input placeholder="ИНН" @bind-value="@INN"></input>
-    <br /><br />
-    <label>КПП:</label> <input placeholder="КПП" @bind-value="@KPP"></input>
-    <br /><br />
-    <label>Адрес:</label> <input placeholder="Адрес" @bind-value="@Adress"></input>
-    <br /><br />
-    <label>Глава исполкома:</label> <input placeholder="Глава исполкома" @bind-value="@Chief"></input>
+﻿<div class="row g-3">
+    <div class="col-md-4">
+        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@devOrg" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@OGRN" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@INN" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@KPP" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@address" required></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Глава исполкома:</label> <input placeholder="Глава исполкома" class="form-control" @bind-value="@chief" required></input>
+    </div>
+
 </div>
 
 
 @code {
-    string devOrg;
-    string OGRN;
-    string INN;
-    string KPP;
-    string Adress;
-    string Chief;
+    public string devOrg;
+    public string OGRN;
+    public string INN;
+    public string KPP;
+    public string address;
+    public string chief;
 }
