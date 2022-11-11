@@ -1,136 +1,108 @@
 ﻿@page "/regPage"
 @using DocumentApp.Data
+@using DocumentApp.Enums
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
 @inject IJSRuntime JS
 
 <h1>Registration form</h1>
-<EditForm class="row g-3" id="regForm" >
+<EditForm class="row g-3" id="regForm" Model="@currentUser" OnValidSubmit="@(() => AddToDb())">
+<DataAnnotationsValidator></DataAnnotationsValidator>
+<ValidationSummary></ValidationSummary>
 
     <div class="col-md-4">
-        <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@lastName" required></input>
+        <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentUser.LastName"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@firstName" required></input>
+        <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentUser.FirstName"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@login" required></input>
+        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@currentUser.Login"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@password" required></input>
+        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@currentUser.Password"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword" required></input>
+        <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@email" required></input>
+        <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@currentUser.Email"></input>
     </div>
 
-        <div class="col-md-4">
-        <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@telephone" required></input>
+    <div class="col-md-4">
+        <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@currentUser.Telephone"></input>
     </div>
 
     <div class="col-md-4">
         <label>Роль</label> 
-        <select id="roleSelector" class="form-control" @bind="@role" required>
-            <option value="Заказчик">Заказчик</option>
-            <option value="Застройщик">Застройщик</option>
-            <option value="Проектировщик">Проектировщик</option>
+        <select id="roleSelector" class="form-control" @bind="@currentUser.Role">
+            <option disabled> -- Выберите роль -- </option>
+            <option value="@RolesEnum.Customer">Заказчик</option>
+            <option value="@RolesEnum.Developer">Застройщик</option>
+            <option value="@RolesEnum.Projecter">Проектировщик</option>
         </select>
     </div>
 
-
-    @if(role == "Заказчик")
-    {
-        <CustomerComponent @ref="cc"></CustomerComponent>
-    }
-    @if(role == "Застройщик")
-    {
-        <DeveloperComponent @ref="dc"></DeveloperComponent>
-    }
-    @if(role == "Проектировщик")
-    {
-        <ProjecterComponent @ref="pc"></ProjecterComponent>
-    }
     <br /><br />
     <div class="col-12">
-         <button class="btn btn-primary mb-3" type="submit" @oninvalid="() => StateHasChanged()" @onclick="() => AddToDb() ">Sign Up</button>
+         <button class="btn btn-primary mb-3" type="submit" @onclick="() => StateHasChanged()">Sign Up</button>
     </div>
 </EditForm>
 
 @code {
-    string firstName = "";
-    string lastName = "";
-    string login = "";
-    string password = "";
-    string email = "";
-    string telephone = "";
-
-    string checkPassword = "";
-    string role = "";
-
     User currentUser = new User();
 
-    CustomerComponent cc;
-
-    DeveloperComponent dc;
-
-    ProjecterComponent pc;
+    string checkPassword = "";
 
 
     private async void AddToDb()
     {
-        if (!IsFulledFields())
-        {
-            await JS.InvokeVoidAsync("alert", "Not all fields are written!");
-            return;
-        }
+        //if (!IsFulledFields())
+        //{
+        //    await JS.InvokeVoidAsync("alert", "Not all fields are written!");
+        //    return;
+        //}
 
-        if (checkPassword != password)
+        if (checkPassword != currentUser.Password)
         {
             await JS.InvokeVoidAsync("alert", "Passwords are not the same!");
             return;
         }
-        if (mongoConnection.FindByLogin(login) is not null)
+
+        if (mongoConnection.FindByLogin(currentUser.Login) is not null)
         {
             await JS.InvokeVoidAsync("alert", "Such login already exists!");
             return;
         }
 
-        if(role == "Заказчик")
+        if(currentUser.Role.ToString() == "Customer")
         {
-            mongoConnection.AddToDataBase(new Customer(login, password, firstName, lastName, email, 
-                telephone, Enums.RolesEnum.Customer, cc.department));
+            mongoConnection.AddToDataBase(new Customer(currentUser.Login, currentUser.Password, currentUser.FirstName,
+                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Customer));
         }
-        else if (role == "Застройщик")
+        else if (currentUser.Role.ToString() == "Developer")
         {
-            mongoConnection.AddToDataBase(new Developer(login, password, firstName, lastName, email,
-                telephone, Enums.RolesEnum.Developer, dc.devOrg, dc.OGRN, dc.INN, dc.KPP, 
-                dc.address, dc.chief));
+            mongoConnection.AddToDataBase(new Developer(currentUser.Login, currentUser.Password, currentUser.FirstName,
+                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Developer));
         }
-        else if (role == "Проектировщик")
+        else if (currentUser.Role.ToString() == "Projecter")
         {
-            mongoConnection.AddToDataBase(new Projecter(login, password, firstName, lastName, email,
-                telephone, Enums.RolesEnum.Projecter, pc.projectOrganisation, pc.OGRN, pc.INN, pc.KPP, pc.address,
-                pc.director, pc.mainEngineer));
+            mongoConnection.AddToDataBase(new Projecter(currentUser.Login, currentUser.Password, currentUser.FirstName,
+                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Projecter));
         }
 
+        ClearFields();
         StateHasChanged();
     }
 
-    private bool IsFulledFields()
+    private void ClearFields()
     {
-        if (String.IsNullOrEmpty(email) || String.IsNullOrEmpty(firstName) || String.IsNullOrEmpty(lastName)
-        || String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(telephone) ||
-        checkPassword == "" || role == "")
-        {
-            return false;
-        }
-        return true;
+        currentUser = new User();
+        checkPassword = "";
     }
 
 }

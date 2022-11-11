@@ -1,0 +1,57 @@
+﻿@page "/authoPage"
+@using DocumentApp.Data
+@using DocumentApp.Services
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
+@inject DocumentApp.Services.UserService userService
+<h3>AuthoPage</h3>
+
+<EditForm Model="@user" OnValidSubmit="TryToFindUser">
+<DataAnnotationsValidator></DataAnnotationsValidator>
+<ValidationSummary></ValidationSummary>
+<div class="row g-3">
+        <div class="col-md-4">
+        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@user.Login"></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@user.Password"></input>
+    </div>
+
+    <div class="col-12">
+        <button type="submit">Sign in</button>
+    </div>
+</div>
+</EditForm>
+
+@code {
+    User user = new User();
+
+    private async Task TryToFindUser()
+    {
+        User foundedUser;
+
+        foundedUser = mongoConnection.FindByLogin(user.Login);
+
+        if (foundedUser is null)
+        {
+            await JS.InvokeVoidAsync("alert", "No such user in DB!");
+            return;
+        }
+        else
+        {
+            if (foundedUser.Password == user.Password)
+            {
+                UserService.currentUser = mongoConnection.FindByLogin(user.Login);
+                nManager.NavigateTo("/personalCardPage");
+                await storageService.SetAsync<User>("Authorization", UserService.currentUser);
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", "Incorrect password!");
+            }
+        }
+
+        StateHasChanged();
+    }
+}

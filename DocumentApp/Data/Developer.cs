@@ -4,6 +4,10 @@ namespace DocumentApp.Data
 {
     public class Developer : User
     {
+        public Developer(string login, string password, string firstName, string lastName, string email, string telephone, RolesEnum role) 
+            : base(login, password, firstName, lastName, email, telephone, role)
+        {
+        }
 
         public Developer(string login, string password, string firstName, string lastName, string email, string telephone, RolesEnum role,
             string developerOrganisation, string oGRN, string iNN, string kPP, string adress, string chief) 

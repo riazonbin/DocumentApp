@@ -5,6 +5,10 @@ namespace DocumentApp.Data
 {
     public class Projecter : User
     {
+        public Projecter(string login, string password, string firstName, string lastName, string email, string telephone, RolesEnum role) : base(login, password, firstName, lastName, email, telephone, role)
+        {
+        }
+
         public Projecter(string login, string password, string firstName, string lastName, string email, string telephone, RolesEnum role,
             string projectOrganisation, string oGRN, string iNN, string kPP, string adress, string director, string mainEngineer)
             : base(login, password, firstName, lastName, email, telephone, role)
