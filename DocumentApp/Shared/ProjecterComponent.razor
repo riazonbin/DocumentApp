@@ -1,41 +1,54 @@
-﻿<div class="row g-3">
-    <div class="col-md-4">
-        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@projectOrganisation" required></input>
+﻿@using DocumentApp.Data
+@inject NavigationManager nManager
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+
+<EditForm Model="@currentProjecter" OnValidSubmit="@(() => SaveChanges())">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@currentProjecter.ProjectOrganisation"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@currentProjecter.OGRN"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@currentProjecter.INN"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@currentProjecter.KPP"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@currentProjecter.Adress"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Директор:</label> <input placeholder="Директор" class="form-control" @bind-value="@currentProjecter.Director"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Главеный инженер:</label> <input placeholder="Глав.инженер" class="form-control" @bind-value="@currentProjecter.MainEngineer"></input>
+        </div>
+
+        <div class="col-12">
+             <button class="btn btn-primary mb-3" type="submit">Сохранить данные</button>
+        </div>
+
     </div>
-
-    <div class="col-md-4">
-        <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@OGRN" required></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@INN" required></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@KPP" required></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@address" required></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>Директор:</label> <input placeholder="Директор" class="form-control" @bind-value="@director" required></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>Главеный инженер:</label> <input placeholder="Глав.инженер" class="form-control" @bind-value="@mainEngineer" required></input>
-    </div>
-
-</div>
-
+</EditForm>
 
 @code {
-    public string projectOrganisation;
-    public string OGRN;
-    public string INN;
-    public string KPP;
-    public string address;
-    public string director;
-    public string mainEngineer;
+    [Parameter]
+    public Projecter currentProjecter { get; set; }
+
+
+    private void SaveChanges()
+    {
+        mongoConnection.UpdateDeveloper(currentProjecter);
+        nManager.NavigateTo("/personalCardPage", true);
+    }
 }

@@ -4,25 +4,25 @@
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
 @inject IJSRuntime JS
 @inject DocumentApp.Services.UserService userService
+@inject NavigationManager nManager
+@inject ILocalStorageService storageService
 <h3>AuthoPage</h3>
 
-<EditForm Model="@user" OnValidSubmit="TryToFindUser">
-<DataAnnotationsValidator></DataAnnotationsValidator>
-<ValidationSummary></ValidationSummary>
+<form onsubmit="@TryToFindUser">
 <div class="row g-3">
         <div class="col-md-4">
-        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@user.Login"></input>
+        <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@user.Login" required></input>
     </div>
 
     <div class="col-md-4">
-        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@user.Password"></input>
+        <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@user.Password" required></input>
     </div>
 
     <div class="col-12">
         <button type="submit">Sign in</button>
     </div>
 </div>
-</EditForm>
+</form>
 
 @code {
     User user = new User();
@@ -42,9 +42,9 @@
         {
             if (foundedUser.Password == user.Password)
             {
-                UserService.currentUser = mongoConnection.FindByLogin(user.Login);
+                userService.currentUser = mongoConnection.FindByLogin(user.Login);
                 nManager.NavigateTo("/personalCardPage");
-                await storageService.SetAsync<User>("Authorization", UserService.currentUser);
+                await storageService.SetAsync<User>("Authorization", userService.currentUser);
             }
             else
             {

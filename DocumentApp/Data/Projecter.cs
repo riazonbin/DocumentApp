@@ -1,4 +1,5 @@
 ﻿using DocumentApp.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 
 namespace DocumentApp.Data
@@ -22,18 +23,25 @@ namespace DocumentApp.Data
             MainEngineer = mainEngineer;
         }
 
+        [Required]
         public string ProjectOrganisation { get; set; }
 
+        [Required]
         public string OGRN { get; set; }
 
+        [Required]
         public string INN { get; set; }
 
+        [Required]
         public string KPP { get; set; }
 
+        [Required]
         public string Adress { get; set; }
 
+        [Required]
         public string Director { get; set; }
 
+        [Required]
         public string MainEngineer { get; set; }
     }
 }

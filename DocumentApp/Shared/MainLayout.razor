@@ -1,4 +1,8 @@
-﻿@inherits LayoutComponentBase
+﻿@using DocumentApp.Data
+@using DocumentApp.Services
+@inherits LayoutComponentBase
+@inject ILocalStorageService storageService
+@inject UserService userService
 
 <PageTitle>DocumentApp</PageTitle>
 
@@ -9,7 +13,7 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a target="_blank" href="/personalCardPage"> <p></p> @userService.currentUser?.FirstName</a>
         </div>
 
         <article class="content px-4">
@@ -17,3 +21,15 @@
         </article>
     </main>
 </div>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        User potentialUser = await storageService.GetAsync<User>("Authorization");
+        if (potentialUser is not null)
+        {
+            userService.currentUser = potentialUser;
+        }
+    }
+}

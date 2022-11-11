@@ -1,4 +1,5 @@
 ﻿using DocumentApp.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace DocumentApp.Data
 {
@@ -21,16 +22,22 @@ namespace DocumentApp.Data
             Chief = chief;
         }
 
+        [Required]
         public string DeveloperOrganisation { get; set; }
 
+        [Required]
         public string OGRN { get; set; }
 
+        [Required]
         public string INN { get; set; }
 
+        [Required]
         public string KPP { get; set; }
 
+        [Required]
         public string Adress { get; set; }
 
+        [Required]
         public string Chief {  get; set; }
 
 

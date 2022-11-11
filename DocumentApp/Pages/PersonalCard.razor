@@ -1,0 +1,100 @@
+﻿@page "/personalCardPage"
+
+<PageTitle>Personal page</PageTitle>
+
+@using DocumentApp.Data
+@using DocumentApp.Services
+@using Microsoft.AspNetCore.Components.Web
+@inject IJSRuntime JS
+@inject ILocalStorageService storageService
+@inject MongoDBConnection mongoConnection
+@inject NavigationManager nManager
+@inject UserService userService
+
+<h1>Personal card</h1>
+
+@if (userService.currentUser is not null)
+{
+    @if(userService.currentUser.Role == Enums.RolesEnum.Customer)
+    {
+        <div class="card" style="width : 250px">
+            <div class="card-body">
+                <p>First name: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).FirstName))</p>
+                <p>Last name: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).LastName))</p>
+                <p>Email: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Email))</p>
+                <p>Phone number: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Telephone))</p>
+                <p>Department: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Department))</p>
+            </div>
+            <button @onclick="() => LoginOut()">Login out</button>
+            <button @onclick="() => ChangeData()">Change data</button>
+        </div>   
+    }
+    @if (userService.currentUser.Role == Enums.RolesEnum.Developer)
+    {
+        <div class="card" style="width : 250px">
+            <div class="card-body">
+                <p>First name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).FirstName))</p>
+                <p>Last name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).LastName))</p>
+                <p>Email: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Email))</p>
+                <p>Phone number: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Telephone))</p>
+                <p>ОГРН: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).OGRN))</p>
+                <p>Организация: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).DeveloperOrganisation))</p>
+                <p>Адрес: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Adress))</p>
+                <p>ИНН: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).INN))</p>
+                <p>КПП: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).KPP))</p>
+                <p>Глава исполкома: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Chief))</p>
+            </div>
+            <button @onclick="() => LoginOut()">Login out</button>
+            <button @onclick="() => ChangeData()">Change data</button>
+        </div>   
+    }
+
+    @if (userService.currentUser.Role == Enums.RolesEnum.Projecter)
+    {
+        <div class="card" style="width : 250px">
+            <div class="card-body">
+                <p class="form-control">First name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).FirstName))</p>
+                <p>Last name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).LastName))</p>
+                <p>Email: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Email))</p>
+                <p>Phone number: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Telephone))</p>
+                <p>ОГРН: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).OGRN))</p>
+                <p>Организация: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).ProjectOrganisation))</p>
+                <p>Адрес: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Adress))</p>
+                <p>ИНН: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).INN))</p>
+                <p>КПП: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).KPP))</p>
+                <p>Главный инженер: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).MainEngineer))</p>
+                <p>Директор: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Director))</p>
+            </div>
+            <button @onclick="() => LoginOut()">Login out</button>
+            <button @onclick="() => ChangeData()">Change data</button>
+        </div>   
+    }
+
+    if(isChangingData && userService.currentUser.Role == Enums.RolesEnum.Developer)
+    {
+        <DeveloperComponent currentDeveloper="mongoConnection.FindDeveloperByLogin(userService.currentUser.Login)"></DeveloperComponent>
+    }
+}
+
+@code {
+    bool isChangingData = false;
+
+    private void LoginOut()
+    {
+        userService.currentUser = null;
+        storageService.RemoveAsync("Authorization");
+        nManager.NavigateTo("/");
+    }
+
+    private void ChangeData()
+    {
+        if(isChangingData)
+        {
+            isChangingData = false;
+        }
+        else
+        {
+            isChangingData = true;
+        }
+    }
+}

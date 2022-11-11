@@ -1,36 +1,50 @@
-﻿<div class="row g-3">
+﻿@using DocumentApp.Data
+@inject NavigationManager nManager
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+
+<EditForm Model="@currentDeveloper" OnValidSubmit="@(() => SaveChanges())">
+ <DataAnnotationsValidator></DataAnnotationsValidator>
+ <ValidationSummary></ValidationSummary>
+    <div class="row g-3">
     <div class="col-md-4">
-        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@devOrg" required></input>
+        <label>Организация:</label> <input placeholder="Organisation" class="form-control" @bind-value="@currentDeveloper.DeveloperOrganisation"></input>
     </div>
 
     <div class="col-md-4">
-        <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@OGRN" required></input>
+        <label>ОГРН:</label> <input placeholder="ОГРН" class="form-control" @bind-value="@currentDeveloper.OGRN"></input>
     </div>
 
     <div class="col-md-4">
-        <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@INN" required></input>
+        <label>ИНН:</label> <input placeholder="ИНН" class="form-control" @bind-value="@currentDeveloper.INN" ></input>
     </div>
 
     <div class="col-md-4">
-        <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@KPP" required></input>
+        <label>КПП:</label> <input placeholder="КПП" class="form-control" @bind-value="@currentDeveloper.KPP"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@address" required></input>
+        <label>Адрес:</label> <input placeholder="Адрес" class="form-control" @bind-value="@currentDeveloper.Adress"></input>
     </div>
 
     <div class="col-md-4">
-        <label>Глава исполкома:</label> <input placeholder="Глава исполкома" class="form-control" @bind-value="@chief" required></input>
+        <label>Глава исполкома:</label> <input placeholder="Глава исполкома" class="form-control" @bind-value="@currentDeveloper.Chief"></input>
+    </div>
+
+    <div class="col-12">
+         <button class="btn btn-primary mb-3" type="submit">Сохранить данные</button>
     </div>
 
 </div>
+</EditForm>
 
 
 @code {
-    public string devOrg;
-    public string OGRN;
-    public string INN;
-    public string KPP;
-    public string address;
-    public string chief;
+    [Parameter]
+    public Developer currentDeveloper { get; set; }
+
+    private void SaveChanges()
+    {
+        mongoConnection.UpdateDeveloper(currentDeveloper);
+        nManager.NavigateTo("/personalCardPage", true);
+    }
 }

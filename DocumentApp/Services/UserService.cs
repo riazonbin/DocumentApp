@@ -4,6 +4,6 @@ namespace DocumentApp.Services
 {
     public class UserService
     {
-        public static User currentUser;
+        public User? currentUser;
     }
 }
