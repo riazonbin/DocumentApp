@@ -1,6 +1,8 @@
 ﻿@using DocumentApp.Data
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
 @inject NavigationManager nManager
+@inject IJSRuntime JS
+
 <EditForm Model="@currentCustomer" OnValidSubmit="@(() => SaveChanges())">
     <div class="row g-3">
         <div class="col-md-4">
@@ -10,6 +12,8 @@
                 <option value="Водоснабжение">Водоснабжение</option>
             </select>
         </div>
+
+        <UserComponent @ref="uc" currentUser="currentCustomer"></UserComponent>
 
         <div class="col-12">
             <button class="btn btn-primary mb-3" type="submit">Сохранить данные</button>
@@ -24,8 +28,16 @@
 
     public string department;
 
+    UserComponent uc;
+
     private void SaveChanges()
     {
+        if (uc.checkPassword != uc.currentUser.Password)
+        {
+            JS.InvokeVoidAsync("alert", "Passwords are not the same!");
+            return;
+        }
+
         mongoConnection.UpdateCustomer(currentCustomer);
         nManager.NavigateTo("/personalCardPage", true);
     }

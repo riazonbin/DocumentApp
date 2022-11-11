@@ -1,6 +1,7 @@
 ﻿@using DocumentApp.Data
 @inject NavigationManager nManager
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
 
 <EditForm Model="@currentDeveloper" OnValidSubmit="@(() => SaveChanges())">
  <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -30,10 +31,11 @@
         <label>Глава исполкома:</label> <input placeholder="Глава исполкома" class="form-control" @bind-value="@currentDeveloper.Chief"></input>
     </div>
 
+    <UserComponent @ref="uc" currentUser="currentDeveloper"></UserComponent>
+
     <div class="col-12">
          <button class="btn btn-primary mb-3" type="submit">Сохранить данные</button>
     </div>
-
 </div>
 </EditForm>
 
@@ -42,8 +44,16 @@
     [Parameter]
     public Developer currentDeveloper { get; set; }
 
+    UserComponent uc;
+
     private void SaveChanges()
     {
+        if (uc.checkPassword != uc.currentUser.Password)
+        {
+            JS.InvokeVoidAsync("alert", "Passwords are not the same!");
+            return;
+        }
+
         mongoConnection.UpdateDeveloper(currentDeveloper);
         nManager.NavigateTo("/personalCardPage", true);
     }

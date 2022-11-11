@@ -1,6 +1,7 @@
 ﻿@using DocumentApp.Data
 @inject NavigationManager nManager
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
 
 <EditForm Model="@currentProjecter" OnValidSubmit="@(() => SaveChanges())">
     <DataAnnotationsValidator></DataAnnotationsValidator>
@@ -31,8 +32,10 @@
         </div>
 
         <div class="col-md-4">
-            <label>Главеный инженер:</label> <input placeholder="Глав.инженер" class="form-control" @bind-value="@currentProjecter.MainEngineer"></input>
+            <label>Главный инженер:</label> <input placeholder="Глав.инженер" class="form-control" @bind-value="@currentProjecter.MainEngineer"></input>
         </div>
+
+        <UserComponent @ref="uc" currentUser="currentProjecter"></UserComponent>
 
         <div class="col-12">
              <button class="btn btn-primary mb-3" type="submit">Сохранить данные</button>
@@ -45,9 +48,16 @@
     [Parameter]
     public Projecter currentProjecter { get; set; }
 
+    UserComponent uc;
 
     private void SaveChanges()
     {
+        if (uc.checkPassword != uc.currentUser.Password)
+        {
+            JS.InvokeVoidAsync("alert", "Passwords are not the same!");
+            return;
+        }
+
         mongoConnection.UpdateDeveloper(currentProjecter);
         nManager.NavigateTo("/personalCardPage", true);
     }

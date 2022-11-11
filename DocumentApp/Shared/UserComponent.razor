@@ -1,0 +1,118 @@
+﻿@using DocumentApp.Data
+@inject NavigationManager nManager
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
+
+
+
+@*@if(currentCustomer is not null)
+{
+    <EditForm Model="@currentCustomer" class="row g-3">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+        <div class="col-md-4">
+                <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentCustomer.LastName"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentCustomer.FirstName"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@currentCustomer.Password"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@currentCustomer.Email"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@currentCustomer.Telephone"></input>
+        </div>
+
+    </EditForm>
+}
+
+if(currentProjecter is not null)
+{
+    <EditForm class="row g-3" Model="@currentProjecter">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationSummary></ValidationSummary>
+
+        <div class="col-md-4">
+                <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentProjecter.LastName"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentProjecter.FirstName"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@currentProjecter.Password"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@currentProjecter.Email"></input>
+        </div>
+
+        <div class="col-md-4">
+                <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@currentProjecter.Telephone"></input>
+        </div>
+     </EditForm>
+}
+*@
+
+<EditForm class="row g-3" Model="@currentUser">
+<DataAnnotationsValidator></DataAnnotationsValidator>
+<ValidationSummary></ValidationSummary>
+
+    <div class="col-md-4">
+            <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentUser.LastName"></input>
+    </div>
+
+    <div class="col-md-4">
+            <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentUser.FirstName"></input>
+    </div>
+
+    <div class="col-md-4">
+            <label>Пароль:</label> <input placeholder="Пароль" class="form-control" @bind-value="@currentUser.Password"></input>
+    </div>
+
+    <div class="col-md-4">
+        <label>Повторите пароль:</label> <input placeholder="Повторите пароль" class="form-control" @bind-value="@checkPassword"></input>
+    </div>
+
+    <div class="col-md-4">
+            <label>Email:</label> <input placeholder="Email" class="form-control" @bind-value="@currentUser.Email"></input>
+    </div>
+
+    <div class="col-md-4">
+            <label>Телефон:</label> <input placeholder="Телефон" class="form-control" @bind-value="@currentUser.Telephone"></input>
+    </div>
+    </EditForm>
+
+
+@code {
+    [Parameter]
+    public User currentUser { get; set; }
+
+    //[Parameter]
+    //public Customer currentCustomer { get; set; }
+
+    //[Parameter]
+    //public Developer currentDeveloper { get; set; }
+
+    //[Parameter]
+    //public Projecter currentProjecter { get; set; }
+
+    public string checkPassword = "";
+}
