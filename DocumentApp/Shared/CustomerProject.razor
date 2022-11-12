@@ -30,7 +30,6 @@
         {
             <tr>
                 <td>@doc</td>
-                <td><input type="checkbox" /></td>
             </tr>
         }
         </tbody>
@@ -48,15 +47,10 @@
         foreach(var doc in defDoc.docsGas)
         {
             docs.Add(new Document
-                {
-                    Name = doc,
-                    isRequired = false
-                });
+            {
+                Name = doc,
+                isRequired = false
+            });
         }
-    }
-
-    void CheckRequired(Document doc, ChangeEventArgs e)
-    {
-        var checked = e.Value;
     }
 }
