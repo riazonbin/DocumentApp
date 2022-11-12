@@ -1,0 +1,23 @@
+﻿@inject DocumentApp.Services.UserService userService
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject DocumentApp.Defaults.DefaultDocument defDoc
+@using DocumentApp.Data
+
+@page "/projectPage"
+
+
+<h3>ProjectPage</h3>
+
+@if(userService.currentUser.Role == Enums.RolesEnum.Customer)
+{
+    customer =  mongoConnection.FindCustomerByLogin(userService.currentUser.Login);
+
+    <CustomerProject department="@customer.Department"></CustomerProject>
+
+}
+
+@code {
+    Customer customer;
+    Projecter projecter;
+    Developer developer;
+}

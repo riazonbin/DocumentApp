@@ -18,12 +18,12 @@ namespace DocumentApp.Services
         }
 
         #region Upload
-        public async Task UploadImageToDb(Stream stream, string fileName)
+        public async Task UploadDocumentToDb(Stream stream, string fileName)
         {
             await _gridFS.UploadFromStreamAsync(fileName, stream);
         }
 
-        public void UploadImageToDb(string fileName, string path)
+        public void UploadFileToDb(string fileName, string path)
         {
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
@@ -41,41 +41,41 @@ namespace DocumentApp.Services
             }
         }
 
-        public void DownloadFileToProject(IBrowserFile file)
-        {
-            try
-            {
-                using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Name}", FileMode.CreateNew))
-                {
-                    _gridFS.DownloadToStreamByName(file.Name, fs);
-                }
-            }
-            catch (Exception)
-            {
-                _logger.LogError("Image already exists");
-            }
-        }
+        //public void DownloadFileToProject(IBrowserFile file)
+        //{
+        //    try
+        //    {
+        //        using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Name}", FileMode.CreateNew))
+        //        {
+        //            _gridFS.DownloadToStreamByName(file.Name, fs);
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        _logger.LogError("Image already exists");
+        //    }
+        //}
         #endregion
 
-        public void GetImagesToProjectFolder()
-        {
-            var images = _gridFS.Find(new BsonDocument()).ToList();
-            foreach (var image in images)
-            {
-                try
-                {
-                    using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{image.Filename}", FileMode.CreateNew))
-                    {
-                        _gridFS.DownloadToStreamByName(image.Filename, fs);
-                    }
-                }
-                catch (Exception)
-                {
-                    _logger.LogError("Image already exists");
-                }
+        //public void GetImagesToProjectFolder()
+        //{
+        //    var images = _gridFS.Find(new BsonDocument()).ToList();
+        //    foreach (var image in images)
+        //    {
+        //        try
+        //        {
+        //            using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{image.Filename}", FileMode.CreateNew))
+        //            {
+        //                _gridFS.DownloadToStreamByName(image.Filename, fs);
+        //            }
+        //        }
+        //        catch (Exception)
+        //        {
+        //            _logger.LogError("Image already exists");
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
         public List<string> FindFiles()
         {

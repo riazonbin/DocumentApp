@@ -19,6 +19,7 @@
     {
         <div class="card" style="width : 250px">
             <div class="card-body">
+                <p class="form-control">Login: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Login))</p>
                 <p class="form-control">First name: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).FirstName))</p>
                 <p class="form-control">Last name: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).LastName))</p>
                 <p class="form-control">Email: @((mongoConnection.FindCustomerByLogin(userService.currentUser.Login).Email))</p>
@@ -32,6 +33,7 @@
     {
         <div class="card" style="width : 250px">
             <div class="card-body">
+                <p class="form-control">Login: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Login))</p>
                 <p class="form-control">First name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).FirstName))</p>
                 <p class="form-control">Last name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).LastName))</p>
                 <p class="form-control">Email: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Email))</p>
@@ -50,6 +52,7 @@
     {
         <div class="card" style="width : 250px">
             <div class="card-body">
+                <p class="form-control">Login:@((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Login))</p>
                 <p class="form-control">First name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).FirstName))</p>
                 <p class="form-control">Last name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).LastName))</p>
                 <p class="form-control">Email: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Email))</p>

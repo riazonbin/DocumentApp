@@ -1,4 +1,5 @@
 using DocumentApp.Services;
+using DocumentApp.Defaults;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 
@@ -11,6 +12,7 @@ builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
 builder.Services.AddScoped<MongoDBConnection>();
 builder.Services.AddSingleton<FileSystemService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<DefaultDocument>();
 
 var app = builder.Build();
 

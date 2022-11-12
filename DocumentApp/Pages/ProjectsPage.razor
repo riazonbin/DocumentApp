@@ -1,6 +1,13 @@
 ﻿@page "/projectsPage"
+@inject DocumentApp.Services.UserService userService
+@inject NavigationManager nManager
 
 <h3>ProjectsPage</h3>
+
+@if(userService.currentUser.Role == Enums.RolesEnum.Customer)
+{
+    <button @onclick="@(() => nManager.NavigateTo("/projectPage"))">Добавить проект</button>   
+}
 
 @code {
 

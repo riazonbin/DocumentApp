@@ -39,9 +39,11 @@ namespace DocumentApp.Data
         public string LastName { get; set; }
 
         [Required]
+        [RegularExpression(@"^\S+@\S+\.\S+$", ErrorMessage ="Not correct email!")]
         public string Email { get; set; }
 
         [Required]
+        [RegularExpression(@"^[1-9]\d{3}\d{3}\d{4}$", ErrorMessage = "Неверный формат номера телефона!")]
         public string Telephone { get; set; }
 
         [Required]

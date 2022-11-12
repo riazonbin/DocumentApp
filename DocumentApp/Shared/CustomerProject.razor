@@ -1,0 +1,62 @@
+﻿@inject DocumentApp.Defaults.DefaultDocument defDoc
+@using DocumentApp.Data
+
+@if(department == "Газификация")
+{
+    <table class="table">
+        <thead>
+            <th>Doc name</th>
+            <th>Req</th>
+        </thead>
+        <tbody>
+        @foreach(var doc in docs)
+        {
+            <tr>
+                <td>@doc.Name</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@if(department == "Водоснабжение")
+{
+    <table class="table">
+        <thead>
+            <th>Doc name</th>
+            <th>Обязателен</th>
+        </thead>
+        <tbody>
+        @foreach(var doc in defDoc.docsWater)
+        {
+            <tr>
+                <td>@doc</td>
+                <td><input type="checkbox" /></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public string department { get; set; }
+    List<Document> docs;
+    protected override void OnInitialized()
+    {
+        docs = new();
+        base.OnInitialized();
+        foreach(var doc in defDoc.docsGas)
+        {
+            docs.Add(new Document
+                {
+                    Name = doc,
+                    isRequired = false
+                });
+        }
+    }
+
+    void CheckRequired(Document doc, ChangeEventArgs e)
+    {
+        var checked = e.Value;
+    }
+}
