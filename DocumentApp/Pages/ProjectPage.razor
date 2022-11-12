@@ -1,6 +1,7 @@
 ﻿@inject DocumentApp.Services.UserService userService
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
 @inject DocumentApp.Defaults.DefaultDocument defDoc
+@inject DocumentApp.Services.FileSystemService fileSysServ
 @using DocumentApp.Data
 
 @page "/projectPage"
@@ -17,7 +18,16 @@
 }
 
 @code {
+    [Parameter]
+    public bool IsNew { get; set; }
+
     Customer customer;
     Projecter projecter;
     Developer developer;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        fileSysServ.currentProject = new Project();
+    }
 }

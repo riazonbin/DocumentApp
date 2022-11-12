@@ -4,6 +4,8 @@
 @inject IJSRuntime JS
 
 <EditForm Model="@currentCustomer" OnValidSubmit="@(() => SaveChanges())">
+<DataAnnotationsValidator></DataAnnotationsValidator>
+<ValidationSummary></ValidationSummary>
     <div class="row g-3">
         <div class="col-md-4">
             <label>Отдел:</label> 
@@ -11,6 +13,13 @@
                 <option value="Газификация">Газификация</option>
                 <option value="Водоснабжение">Водоснабжение</option>
             </select>
+        </div>
+        <div class="col-md-4">
+        <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentCustomer.LastName"></input>
+        </div>
+
+        <div class="col-md-4">
+            <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentCustomer.FirstName"></input>
         </div>
 
         <UserComponent @ref="uc" currentUser="currentCustomer"></UserComponent>

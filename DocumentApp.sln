@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentApp", "\NAS36D451\user-domain$\stud\202010\Desktop\projects\DocumentApp\DocumentApp\DocumentApp.csproj", "{70377085-8B3D-4982-85E7-A9A36DD983D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentApp", "DocumentApp\DocumentApp.csproj", "{A952597F-14FC-483A-BF1F-C3DCFC69475D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{70377085-8B3D-4982-85E7-A9A36DD983D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70377085-8B3D-4982-85E7-A9A36DD983D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70377085-8B3D-4982-85E7-A9A36DD983D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70377085-8B3D-4982-85E7-A9A36DD983D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A952597F-14FC-483A-BF1F-C3DCFC69475D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A952597F-14FC-483A-BF1F-C3DCFC69475D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A952597F-14FC-483A-BF1F-C3DCFC69475D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A952597F-14FC-483A-BF1F-C3DCFC69475D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

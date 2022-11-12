@@ -34,8 +34,6 @@
         <div class="card" style="width : 250px">
             <div class="card-body">
                 <p class="form-control">Login: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Login))</p>
-                <p class="form-control">First name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).FirstName))</p>
-                <p class="form-control">Last name: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).LastName))</p>
                 <p class="form-control">Email: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Email))</p>
                 <p class="form-control">Phone number: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).Telephone))</p>
                 <p class="form-control">ОГРН: @((mongoConnection.FindDeveloperByLogin(userService.currentUser.Login).OGRN))</p>
@@ -53,8 +51,6 @@
         <div class="card" style="width : 250px">
             <div class="card-body">
                 <p class="form-control">Login:@((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Login))</p>
-                <p class="form-control">First name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).FirstName))</p>
-                <p class="form-control">Last name: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).LastName))</p>
                 <p class="form-control">Email: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Email))</p>
                 <p class="form-control">Phone number: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).Telephone))</p>
                 <p class="form-control">ОГРН: @((mongoConnection.FindProjecterByLogin(userService.currentUser.Login).OGRN))</p>

@@ -1,15 +1,30 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace DocumentApp.Data
 {
     public class Project
     {
-        [BsonId]
-        public ObjectId Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public Project(ObjectId customerId, ObjectId developerId, ObjectId projecterId)
+        {
+            CustomerId = customerId;
+            DeveloperId = developerId;
+            ProjecterId = projecterId;
+            CreatedDate = DateTime.Now;
+        }
 
+        public Project()
+        {
+            CreatedDate = DateTime.Now;
+        }
+
+        [BsonId]
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime CreatedDate { get; set; }
 
         public List<Document> Documents { get; set; } = new List<Document>();

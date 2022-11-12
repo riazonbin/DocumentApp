@@ -8,15 +8,6 @@
 <EditForm class="row g-3" id="regForm" Model="@currentUser" OnValidSubmit="@(() => AddToDb())">
 <DataAnnotationsValidator></DataAnnotationsValidator>
 <ValidationSummary></ValidationSummary>
-
-    <div class="col-md-4">
-        <label>Фамилия:</label> <input placeholder="Фамилия" class="form-control" @bind-value="@currentUser.LastName"></input>
-    </div>
-
-    <div class="col-md-4">
-        <label>Имя:</label> <input placeholder="Имя" class="form-control" @bind-value="@currentUser.FirstName"></input>
-    </div>
-
     <div class="col-md-4">
         <label>Логин:</label> <input placeholder="Логин" class="form-control" @bind-value="@currentUser.Login"></input>
     </div>
@@ -81,18 +72,15 @@
 
         if(currentUser.Role.ToString() == "Customer")
         {
-            mongoConnection.AddToDataBase(new Customer(currentUser.Login, currentUser.Password, currentUser.FirstName,
-                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Customer));
+            mongoConnection.AddToDataBase(new Customer(currentUser.Login, currentUser.Password, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Customer));
         }
         else if (currentUser.Role.ToString() == "Developer")
         {
-            mongoConnection.AddToDataBase(new Developer(currentUser.Login, currentUser.Password, currentUser.FirstName,
-                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Developer));
+            mongoConnection.AddToDataBase(new Developer(currentUser.Login, currentUser.Password, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Developer));
         }
         else if (currentUser.Role.ToString() == "Projecter")
         {
-            mongoConnection.AddToDataBase(new Projecter(currentUser.Login, currentUser.Password, currentUser.FirstName,
-                currentUser.LastName, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Projecter));
+            mongoConnection.AddToDataBase(new Projecter(currentUser.Login, currentUser.Password, currentUser.Email, currentUser.Telephone, Enums.RolesEnum.Projecter));
         }
 
         ClearFields();

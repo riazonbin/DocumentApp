@@ -7,12 +7,10 @@ namespace DocumentApp.Data
 {
     public class User
     {
-        public User(string login, string password, string firstName, string lastName, string email, string telephone, RolesEnum role)
+        public User(string login, string password, string email, string telephone, RolesEnum role)
         {
             Login = login;
             Password = password;
-            FirstName = firstName;
-            LastName = lastName;
             Email = email;
             Telephone = telephone;
             Role = role;
@@ -24,19 +22,13 @@ namespace DocumentApp.Data
         }
 
         [BsonId]
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
-        public string Login { get; set; }
+        public string? Login { get; set; }
 
         [Required]
-        public string Password { get; set; }
-
-        [Required]
-        public string FirstName { get; set; }
-
-        [Required]
-        public string LastName { get; set; }
+        public string? Password { get; set; }
 
         [Required]
         [RegularExpression(@"^\S+@\S+\.\S+$", ErrorMessage ="Not correct email!")]

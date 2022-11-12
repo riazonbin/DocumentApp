@@ -1,12 +1,16 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using DocumentApp.Data;
+using Microsoft.AspNetCore.Components.Forms;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
+using System.Diagnostics;
 
 namespace DocumentApp.Services
 {
     public class FileSystemService
     {
+        public Project currentProject;
+
         private readonly ILogger<FileSystemService> _logger;
         private readonly GridFSBucket _gridFS;
         public FileSystemService(ILogger<FileSystemService> logger)
@@ -21,6 +25,20 @@ namespace DocumentApp.Services
         public async Task UploadDocumentToDb(Stream stream, string fileName)
         {
             await _gridFS.UploadFromStreamAsync(fileName, stream);
+        }
+
+        public byte[] DownloadDocumentFromDb(string fileName)
+        {
+            byte[] byteArray;
+            try
+            {
+                byteArray = _gridFS.DownloadAsBytesByName(fileName);
+            }
+            catch
+            {
+                byteArray = null;
+            }
+            return byteArray;
         }
 
         public void UploadFileToDb(string fileName, string path)
@@ -77,16 +95,16 @@ namespace DocumentApp.Services
         //    }
         //}
 
-        public List<string> FindFiles()
-        {
-            var fileInfos = _gridFS.Find(new BsonDocument()).ToList();
-            var imageInfos = new List<string>();
-            foreach (var file in fileInfos)
-            {
-                imageInfos.Add(file.Filename);
-            }
-            return imageInfos;
-        }
+        //public List<string> FindFiles()
+        //{
+        //    var fileInfos = _gridFS.Find(new BsonDocument()).ToList();
+        //    var imageInfos = new List<string>();
+        //    foreach (var file in fileInfos)
+        //    {
+        //        imageInfos.Add(file.Filename);
+        //    }
+        //    return imageInfos;
+        //}
 
         public bool FileExists(string filename)
         {

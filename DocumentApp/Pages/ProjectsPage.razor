@@ -1,14 +1,26 @@
 ﻿@page "/projectsPage"
 @inject DocumentApp.Services.UserService userService
 @inject NavigationManager nManager
+@inject DocumentApp.Services.FileSystemService fileSysServ
+@using DocumentApp.Data
 
 <h3>ProjectsPage</h3>
-
-@if(userService.currentUser.Role == Enums.RolesEnum.Customer)
+@if(userService.currentUser is not null)
 {
-    <button @onclick="@(() => nManager.NavigateTo("/projectPage"))">Добавить проект</button>   
+    @if (userService.currentUser.Role == Enums.RolesEnum.Customer)
+    {
+        <button @onclick="@(() => nManager.NavigateTo("/projectPage"))">Добавить проект</button>   
+    }
 }
 
-@code {
+
+@code 
+{
+    void GoToOtherPage()
+    {
+        fileSysServ.currentProject = new Project();
+        nManager.NavigateTo("/projectPage");
+    }
+
 
 }

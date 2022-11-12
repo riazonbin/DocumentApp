@@ -1,4 +1,5 @@
 ﻿using DocumentApp.Data;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DocumentApp.Services
@@ -29,6 +30,12 @@ namespace DocumentApp.Services
         {
             var collection = _database.GetCollection<Developer>("DeveloperCollection");
             collection.InsertOne(developer);
+        }
+
+        public void AddToDataBase(Project project)
+        {
+            var collection = _database.GetCollection<Project>("ProjectCollection");
+            collection.InsertOne(project);
         }
 
         #endregion
@@ -75,6 +82,27 @@ namespace DocumentApp.Services
             var filter = Builders<Developer>.Filter.Eq("Login", login);
             var collection = _database.GetCollection<Developer>("DeveloperCollection");
             return collection.Find(filter).FirstOrDefault();
+        }
+
+        public List<Customer> FindCustomers()
+        {
+            var filter = new BsonDocument();
+            var collection = _database.GetCollection<Customer>("CustomerCollection");
+            return collection.Find(filter).ToList();
+        }
+
+        public List<Developer> FindDevelopers()
+        {
+            var filter = new BsonDocument();
+            var collection = _database.GetCollection<Developer>("DeveloperCollection");
+            return collection.Find(filter).ToList();
+        }
+
+        public List<Projecter> FindProjecters()
+        {
+            var filter = new BsonDocument();
+            var collection = _database.GetCollection<Projecter>("ProjecterCollection");
+            return collection.Find(filter).ToList();
         }
 
         #endregion
