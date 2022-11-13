@@ -1,6 +1,7 @@
 ﻿using DocumentApp.Data;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.GridFS;
 
 namespace DocumentApp.Services
 {

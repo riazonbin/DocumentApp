@@ -27,7 +27,7 @@ namespace DocumentApp.Services
             await _gridFS.UploadFromStreamAsync(fileName, stream);
         }
 
-        public byte[] DownloadDocumentFromDb(string fileName)
+        public byte[] GetByteArrayFromFile(string fileName)
         {
             byte[] byteArray;
             try
@@ -40,39 +40,29 @@ namespace DocumentApp.Services
             }
             return byteArray;
         }
-
-        public void UploadFileToDb(string fileName, string path)
-        {
-            using (FileStream fs = new FileStream(path, FileMode.Open))
-            {
-                _gridFS.UploadFromStream(fileName, fs);
-            }
-        }
         #endregion
 
         #region Download
-        public void DownloadFileToProject(GridFSFileInfo file)
+        //public void DownloadFileToProject(GridFSFileInfo file)
+        //{
+        //    using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Filename}", FileMode.CreateNew))
+        //    {
+        //        _gridFS.DownloadToStreamByName(file.Filename, fs);
+        //    }
+        //}
+
+        public void DownloadDocumentToProject(Document document)
         {
-            using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Filename}", FileMode.CreateNew))
+            try
             {
-                _gridFS.DownloadToStreamByName(file.Filename, fs);
+                System.IO.File.WriteAllBytes($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{document.FileName}", document.data);
+            }
+            catch (Exception)
+            {
+                _logger.LogError("File already exists");
             }
         }
 
-        //public void DownloadFileToProject(IBrowserFile file)
-        //{
-        //    try
-        //    {
-        //        using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Name}", FileMode.CreateNew))
-        //        {
-        //            _gridFS.DownloadToStreamByName(file.Name, fs);
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        _logger.LogError("Image already exists");
-        //    }
-        //}
         #endregion
 
         public bool FileExists(string filename)

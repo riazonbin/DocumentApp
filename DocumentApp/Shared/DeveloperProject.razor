@@ -29,8 +29,8 @@
             <td>@doc.FileName</td>
             <td><input type="checkbox" disabled @bind="doc.IsRequired" /></td>
             <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
-            <td><button class="btn btn-primary mb-3" >Download</button></td>
-            <td><button class="btn btn-primary mb-3">Upload</button></td>
+            <td><button class="btn btn-primary mb-3" @onclick="(() => Download(doc))">Download</button></td>
+            <td><InputFile class="btn btn-primary mb-3" OnChange="((e) => LoadFiles(e, doc))">Upload</InputFile></td>
         </tr>
     }
     </tbody>
@@ -49,6 +49,11 @@
 
     }
 
+    private byte[] GetByteArray(string file)
+    {
+        return fileSysServ.GetByteArrayFromFile(file);
+    }
+
     private async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
     {
 
@@ -58,18 +63,18 @@
             await fileSysServ.UploadDocumentToDb(stream, file.Name);
             stream.Dispose();
 
+            doc.FileName = file.Name;
             doc.data = GetByteArray(file.Name);
-            Download(doc);
         }
-    }
-
-    private byte[] GetByteArray(string file)
-    {
-        return fileSysServ.DownloadDocumentFromDb(file);
     }
 
     public void Download(Document doc)
     {
+        try
+        {
+            fileSysServ.DownloadDocumentToProject(doc);
+        }
+        catch { }
     }
 
     public void CloseComp()

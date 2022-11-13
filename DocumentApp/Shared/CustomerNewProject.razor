@@ -282,28 +282,11 @@
 
     }
 
-    private async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
-    {
-
-        foreach (var file in e.GetMultipleFiles(e.FileCount))
-        {
-            Stream stream = file.OpenReadStream(2000000);
-            await fileSysServ.UploadDocumentToDb(stream, file.Name);
-            stream.Dispose();
-
-            doc.data = GetByteArray(file.Name);
-            Download(doc);
-        }
-    }
-
     private byte[] GetByteArray(string file)
     {
-        return fileSysServ.DownloadDocumentFromDb(file);
+        return fileSysServ.GetByteArrayFromFile(file);
     }
 
-    public void Download(Document doc)
-    {
-    }
 
     void UpdateFields()
     {
