@@ -13,9 +13,11 @@
     <thead>
         <tr>
             <th>Doc name</th>
+            <th>File name</th>
             <th>Requirement</th>
             <th>Approvement</th>
             <th>Download</th>
+            <th>Upload</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +25,7 @@
     {
         <tr>
             <td>@doc.Name</td>
+            <td>@doc.FileName</td>
             <td><input type="checkbox" @bind="doc.IsRequired" /></td>
             <td><input type="checkbox" @bind="doc.IsApproved" /></td>
             <td><button class="btn btn-primary mb-3">Download</button></td>
@@ -40,6 +43,7 @@
         </tr>
     </thead>
     <tbody>
+
     @foreach (var field in fileSysServ.currentProject.Form.FormFields)
     {
         if(currentDepartment == "Газификация")
@@ -54,7 +58,7 @@
 
             <tr>
                 <td>@field.FieldName</td>
-                <td><input disabled @bind="field.FieldValue"/></td>
+                <td><input class="form-control" @bind="field.FieldValue"/></td>
             </tr>
         }
         else
@@ -75,6 +79,7 @@
     }
     </tbody>
 </table>
+<button @onclick="CloseComp" class="btn btn-primary mb-3">Save changes</button>
 
 
 @code {
@@ -84,5 +89,11 @@
     {
         currentDepartment = mongoConnection.FindCustomerById(fileSysServ.currentProject.CustomerId).Department;
         base.OnInitialized();
+    }
+
+    public void CloseComp()
+    {
+        projectService.UpdateProjectInDataBase(fileSysServ.currentProject);
+        nManager.NavigateTo("/projectsPage");
     }
 }

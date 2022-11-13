@@ -16,7 +16,8 @@
                 <tr>
                     <th>Название проекта</th>
                     <th>Проектная организация</th>
-                    <th>Организация застройщика</th
+                    <th>Организация застройщика</th>
+                    <th>Отрасль</th>
                     <th>Перейти к проекту</th>
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                         <td>@project.Name</td>
                         <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                         <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
+                        <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
                         <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                     </tr>
                 }
@@ -43,8 +45,9 @@
                 <tr>
                     <th>Название проекта</th>
                     <th>Проектная организация</th>
-                    <th>Организация застройщика</th
-            <th>Перейти к проекту</th>
+                    <th>Организация застройщика</th>
+                    <th>Отрасль</th>
+                    <th>Перейти к проекту</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +58,7 @@
                     <td>@project.Name</td>
                     <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                     <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
+                    <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
                     <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                 </tr>
             }
@@ -81,6 +85,7 @@
                     <td>@project.Name</td>
                     <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                     <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
+                    <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
                     <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                 </tr>
             }

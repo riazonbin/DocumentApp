@@ -14,6 +14,7 @@
     <thead>
         <tr>
             <th>Doc name</th>
+            <th>File name</th>
             <th>Requirement</th>
             <th>Approvement</th>
             <th>Download</th>
@@ -25,36 +26,23 @@
     {
         <tr>
             <td>@doc.Name</td>
+            <td>@doc.FileName</td>
             <td><input type="checkbox" disabled @bind="doc.IsRequired" /></td>
-                <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
-            <td><button class="btn btn-primary mb-3" >Upload</button></td>
-            <td><button class="btn btn-primary mb-3">Download</button></td>
+            <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
+            <td><button class="btn btn-primary mb-3" >Download</button></td>
+            <td><button class="btn btn-primary mb-3">Upload</button></td>
         </tr>
     }
     </tbody>
 </table>
-
+<button @onclick="CloseComp" class="btn btn-primary mb-3">Save changes</button>
 
 @code 
 {
 
-    List<Document>? docs;
-
     protected override void OnInitialized()
     {
-        docs = new();
         base.OnInitialized();
-
-
-        foreach (var doc in fileSysServ.currentProject.Documents)
-        {
-            docs.Add(new Document
-                {
-                    Name = doc.Name,
-                    IsRequired = false,
-                    IsApproved = false
-                });
-        }
     }
     private void Check(Document doc)
     {
@@ -86,8 +74,6 @@
 
     public void CloseComp()
     {
-        fileSysServ.currentProject.Documents = docs;
-
         projectService.UpdateProjectInDataBase(fileSysServ.currentProject);
         nManager.NavigateTo("/projectsPage");
     }
