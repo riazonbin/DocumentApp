@@ -27,7 +27,7 @@
                     <td>@doc.FileName</td>
                     <td><input type="checkbox" @bind="doc.IsRequired" /></td>
                     <td><input type="checkbox" @bind="doc.IsApproved" /></td>
-                    <td><button class="btn btn-primary mb-3" @onclick="(() => fileSysServ.DownloadDocumentToProject(doc))">Download</button></td>
+                    <td><a class="form-control" href="documents/@doc.FileName" download="@doc.FileName">Download</a></td>
                 </tr>
         }
         </tbody>
@@ -52,7 +52,7 @@
                 <td>@doc.FileName</td>
                 <td><input type="checkbox" @bind="doc.IsRequired" /></td>
                 <td><input type="checkbox" @bind="doc.IsApproved" /></td>
-                <td><button class="btn btn-primary mb-3" @onclick="(() => fileSysServ.DownloadDocumentToProject(doc))">Download</button></td>
+                <td><a class="form-control" href="documents/@doc.FileName" download="@doc.FileName">Download</a></td>
             </tr>
         }
         </tbody>
@@ -68,13 +68,6 @@
         <tbody>
         @foreach (var field in fileSysServ.currentProject.Form.FormFields)
         {
-            if (defDoc.FormHeaders.Contains(field.FieldName))
-            {
-                <tr>
-                    <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
-                </tr>
-                continue;
-            }
             <tr>
                 <td>@field.FieldName</td>
                 <td><input disabled @bind="field.FieldValue"/></td>

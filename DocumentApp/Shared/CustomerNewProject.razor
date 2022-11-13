@@ -66,14 +66,6 @@
         <tbody>
          @foreach (var field in testFields)
         {
-            if(defDoc.FormHeaders.Contains(field.FieldName))
-            {
-                projecterForm.FormFields.Remove(field);
-                <tr>
-                    <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
-                </tr>
-                continue;
-            }
             <tr>
                 <td>@field.FieldName</td>
                 <td><input disabled @bind="field.FieldValue"/></td>
@@ -160,7 +152,7 @@
                     IsApproved = false
                 });
             }
-            foreach(var field in defDoc.projecterFormGas)
+            foreach(var field in defDoc.projecterFormGasWithoutHeader)
             {
                 projecterForm.FormFields.Add(new FormField(field, ""));
             }
@@ -192,7 +184,7 @@
                     });
             }
 
-            foreach (var field in defDoc.projecterFormWater)
+            foreach (var field in defDoc.projecterFormWaterWithoutHeader)
             {
                 projecterForm.FormFields.Add(new FormField(field, ""));
             }
@@ -233,6 +225,7 @@
         fileSysServ.currentProject.CreatedDate = DateTime.Now;
         fileSysServ.currentProject.Documents = docs;
         fileSysServ.currentProject.Form = projecterForm;
+        fileSysServ.currentProject.ProjectDepartment = (mongoConnection.FindCustomerByLogin(userService.currentUser.Login)).Department;
         fileSysServ.currentProject.ProjecterDocuments = projecterDocs;
 
         projectService.AddDocsToDataBase(docs);

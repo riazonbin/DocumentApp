@@ -63,22 +63,18 @@ namespace DocumentApp.Services
             return _gridFS.Find(FilterDefinition<GridFSFileInfo>.Empty).ToEnumerable().Any(x => x.Filename == filename);
         }
 
-        public byte[] GetByteArray(string file)
-        {
-            return GetByteArrayFromFile(file);
-        }
-
         public async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
         {
 
             foreach (var file in e.GetMultipleFiles(e.FileCount))
             {
                 Stream stream = file.OpenReadStream(2000000);
-                await UploadDocumentToDb(stream, file.Name);
+                await _gridFS.UploadFromStreamAsync(file.Name, stream);
                 stream.Dispose();
 
                 doc.FileName = file.Name;
-                doc.data = GetByteArray(file.Name);
+                doc.data = GetByteArrayFromFile(file.Name);
+                DownloadDocumentToProject(doc);
             }
         }
     }

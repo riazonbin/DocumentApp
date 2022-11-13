@@ -37,5 +37,7 @@ namespace DocumentApp.Data
         public ObjectId DeveloperId { get; set; }
 
         public ObjectId ProjecterId { get; set; }
+
+        public string ProjectDepartment { get; set; }
     }
 }

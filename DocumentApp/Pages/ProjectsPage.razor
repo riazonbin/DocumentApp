@@ -28,7 +28,7 @@
                         <td>@project.Name</td>
                         <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                         <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
-                        <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
+                        <td>@project.ProjectDepartment</td>
                         <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                     </tr>
                 }
@@ -58,7 +58,7 @@
                     <td>@project.Name</td>
                     <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                     <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
-                    <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
+                    <td>@project.ProjectDepartment</td>
                     <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                 </tr>
             }
@@ -85,7 +85,7 @@
                     <td>@project.Name</td>
                     <td>@mongoConnection.FindProjecterById(project.ProjecterId).ProjectOrganisation</td>
                     <td>@mongoConnection.FindDeveloperById(project.DeveloperId).DeveloperOrganisation</td>
-                    <td>@mongoConnection.FindCustomerById(project.CustomerId).Department</td>
+                    <td>@project.ProjectDepartment</td>
                     <td><button class="btn btn-primary mb-3" onclick="@(() => GoToCreatedProject(project))">Go to project</button></td>
                 </tr>
             }
