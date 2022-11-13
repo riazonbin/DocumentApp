@@ -2,6 +2,7 @@
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
 @inject DocumentApp.Defaults.DefaultDocument defDoc
 @inject DocumentApp.Services.FileSystemService fileSysServ
+@inject DocumentApp.Services.ProjectService projService
 @using DocumentApp.Data
 
 @page "/projectPage"
@@ -13,6 +14,7 @@
 {
     customer =  mongoConnection.FindCustomerByLogin(userService.currentUser.Login);
 
+    if()
     <CustomerNewProject department="@customer.Department"></CustomerNewProject>
 
 }

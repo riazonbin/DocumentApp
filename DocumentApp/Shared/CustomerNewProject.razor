@@ -64,13 +64,13 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (var field in projecterForm.FormFields)
+         @foreach (var field in testFields)
         {
             if(defDoc.FormHeaders.Contains(field.FieldName))
             {
                 projecterForm.FormFields.Remove(field);
                 <tr>
-                    <td colspan="2">@field.FieldName</td>
+                    <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
                 </tr>
                 continue;
             }
@@ -81,7 +81,10 @@
         }
         </tbody>
     </table>
+    UpdateFields();
 }
+
+
 @if(department == "Водоснабжение")
 {
     <table class="table">
@@ -136,13 +139,13 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var field in projecterForm.FormFields)
+            @foreach (var field in testFields)
             {
                 if (defDoc.FormHeaders.Contains(field.FieldName))
                 {
                     projecterForm.FormFields.Remove(field);
                     <tr>
-                        <td colspan="2">@field.FieldName</td>
+                        <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
                     </tr>
                     continue;
                 }
@@ -153,6 +156,7 @@
             }
         </tbody>
     </table>
+    UpdateFields();
 }
 <form class="row g-3" onsubmit="@(() => CloseComp())">
 
@@ -195,6 +199,7 @@
     List<Document>? docs;
     List<Document>? projecterDocs;
     Form projecterForm;
+    List<FormField> testFields;
 
     string selectedProjecter;
     string selectedDeveloper;
@@ -202,10 +207,11 @@
 
     protected override void OnInitialized()
     {
+        base.OnInitialized();
         docs = new();
         projecterDocs = new();
         projecterForm = new();
-        base.OnInitialized();
+        testFields = new();
 
         if(department == "Газификация")
         {
@@ -230,6 +236,10 @@
             foreach(var field in defDoc.projecterFormGas)
             {
                 projecterForm.FormFields.Add(new FormField(field, ""));
+            }
+            foreach(var field in projecterForm.FormFields)
+            {
+                testFields.Add(field);
             }
 
         }
@@ -257,11 +267,12 @@
 
             foreach (var field in defDoc.projecterFormWater)
             {
-                if (defDoc.FormHeaders.Contains(field))
-                {
-                    continue;
-                }
                 projecterForm.FormFields.Add(new FormField(field, ""));
+            }
+
+            foreach (var field in projecterForm.FormFields)
+            {
+                testFields.Add(field);
             }
         }
     }
@@ -291,6 +302,11 @@
 
     public void Download(Document doc)
     {
+    }
+
+    void UpdateFields()
+    {
+        testFields = projecterForm.FormFields;
     }
 
     public void CloseComp()
