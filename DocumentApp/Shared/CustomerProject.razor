@@ -68,6 +68,13 @@
         <tbody>
         @foreach (var field in fileSysServ.currentProject.Form.FormFields)
         {
+            if (field.FieldName == "Технико-экономические показатели (ТЭП)" ||
+                field.FieldName == "Вводной газопровод низкого давления")
+            {
+                <tr>
+                    <td colspan="2" align="center"><strong>@field.FieldName</strong></td>
+                </tr>
+            }
             <tr>
                 <td>@field.FieldName</td>
                 <td><input disabled @bind="field.FieldValue"/></td>

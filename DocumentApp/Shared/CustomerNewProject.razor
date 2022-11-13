@@ -62,6 +62,14 @@
         <tbody>
          @foreach (var field in testFields)
         {
+            if(field.FieldName == "Технико-экономические показатели (ТЭП)" ||
+                field.FieldName == "Вводной газопровод низкого давления")
+            {
+                <tr>
+                    <td colspan="2" align="center"><strong>@field.FieldName</strong></td>
+                </tr>
+            }
+
             <tr>
                 <td>@field.FieldName</td>
                 <td><input disabled @bind="field.FieldValue"/></td>
@@ -148,7 +156,7 @@
                     IsApproved = false
                 });
             }
-            foreach(var field in defDoc.projecterFormGasWithoutHeader)
+            foreach(var field in defDoc.projecterFormGas)
             {
                 projecterForm.FormFields.Add(new FormField(field, ""));
             }
@@ -180,7 +188,7 @@
                     });
             }
 
-            foreach (var field in defDoc.projecterFormWaterWithoutHeader)
+            foreach (var field in defDoc.projecterFormWater)
             {
                 projecterForm.FormFields.Add(new FormField(field, ""));
             }

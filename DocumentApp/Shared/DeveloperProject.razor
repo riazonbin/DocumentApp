@@ -30,7 +30,7 @@
             <td><input type="checkbox" disabled @bind="doc.IsRequired" /></td>
             <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
             <td><a class="form-control" href="documents/@doc.FileName" download="@doc.FileName">Download</a></td>
-            <td><InputFile accept=".pdf" class="btn btn-primary mb-3"  OnChange="((e) => fileSysServ.LoadFiles(e, doc))">Upload</InputFile></td>
+            <td><InputFile accept=".pdf" class="form-control"  OnChange="((e) => fileSysServ.LoadFiles(e, doc))">Upload</InputFile></td>
         </tr>
     }
     </tbody>

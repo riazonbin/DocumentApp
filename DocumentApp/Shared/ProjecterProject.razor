@@ -29,7 +29,7 @@
             <td><input type="checkbox" @bind="doc.IsRequired" /></td>
             <td><input type="checkbox" @bind="doc.IsApproved" /></td>
             <td><a class="form-control" href="documents/@doc.FileName" download="@doc.FileName">Download</a></td>
-            <td><InputFile accept=".pdf" class="btn btn-primary mb-3"  OnChange="((e) => fileSysServ.LoadFiles(e, doc))">Upload</InputFile></td>
+            <td><InputFile accept=".pdf" class="form-control"  OnChange="((e) => fileSysServ.LoadFiles(e, doc))">Upload</InputFile></td>
         </tr>
     }
     </tbody>
@@ -44,11 +44,20 @@
     </thead>
     <tbody>
 
-    @foreach (var field in fileSysServ.currentProject.Form.FormFields)
+
+        @foreach (var field in fileSysServ.currentProject.Form.FormFields)
     {
+        if (field.FieldName == "Технико-экономические показатели (ТЭП)" ||
+            field.FieldName == "Вводной газопровод низкого давления")
+        {
+            <tr>
+                <td colspan="2" align="center"><strong>@field.FieldName</strong></td>
+            </tr>
+        }
+
         <tr>
             <td>@field.FieldName</td>
-            <td><input class="form-control" @bind="field.FieldValue"/></td>
+            <td><input disabled @bind="field.FieldValue"/></td>
         </tr>
     }
     </tbody>
