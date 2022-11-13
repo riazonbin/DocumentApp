@@ -1,0 +1,317 @@
+﻿@inject DocumentApp.Defaults.DefaultDocument defDoc
+@using DocumentApp.Data
+@using DocumentApp.Services
+@using Microsoft.AspNetCore.Mvc
+@inject FileSystemService fileSysServ
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject DocumentApp.Services.ProjectService projectService
+@inject IJSRuntime JS
+@inject UserService userService
+@inject NavigationManager nManager
+
+@if(department == "Газификация")
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Doc name</th>
+                <th>Requirement</th>
+                <th>Approvement</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var doc in docs)
+        {
+            <tr>
+                <td>@doc.Name</td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
+                <td><button class="btn btn-primary mb-3">Download</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <hr />
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Doc name</th>
+                <th>Requirement</th>
+                <th>Approvement</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var doc in projecterDocs)
+        {
+            <tr>
+                <td>@doc.Name</td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
+                <td><button class="btn btn-primary mb-3">Download</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name of field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var field in projecterForm.FormFields)
+        {
+            if(defDoc.FormHeaders.Contains(field.FieldName))
+            {
+                projecterForm.FormFields.Remove(field);
+                <tr>
+                    <td colspan="2">@field.FieldName</td>
+                </tr>
+                continue;
+            }
+            <tr>
+                <td>@field.FieldName</td>
+                <td><input disabled @bind="field.FieldValue"/></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@if(department == "Водоснабжение")
+{
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Doc name</th>
+                    <th>Req</th>
+                    <th>Approvement</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+        <tbody>
+        @foreach(var doc in docs)
+        {
+            <tr>
+                <td>@doc.Name</td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
+                <td><button class="btn btn-primary mb-3">Download</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Doc name</th>
+                <th>Requirement</th>
+                <th>Approvement</th>
+                <th>Download</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var doc in projecterDocs)
+        {
+            <tr>
+                <td>@doc.Name</td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
+                <td><button class="btn btn-primary mb-3">Download</button></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name of field</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var field in projecterForm.FormFields)
+            {
+                if (defDoc.FormHeaders.Contains(field.FieldName))
+                {
+                    projecterForm.FormFields.Remove(field);
+                    <tr>
+                        <td colspan="2">@field.FieldName</td>
+                    </tr>
+                    continue;
+                }
+                <tr>
+                    <td>@field.FieldName</td>
+                    <td><input disabled @bind="field.FieldValue"/></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<form class="row g-3" onsubmit="@(() => CloseComp())">
+
+    <div class="col-md-4">
+        <input class="form-control" @bind-value="projectName" required />
+    </div>
+
+    <div class="col-md-4">
+    <select class="form-control" required @bind="selectedDeveloper">
+    <option disabled>Выберите застройщика</option>
+    @foreach (var developer in mongoConnection.FindDevelopers())
+    {
+        <option value="@developer.Login">@developer.DeveloperOrganisation</option>
+    }
+    </select>
+    </div>
+
+    <div class="col-md-4">
+    <select class="form-control" required @bind="selectedProjecter">
+        <option disabled>Выберите застройщика</option>
+    @foreach (var projecter in mongoConnection.FindProjecters())
+    {
+        <option value="@projecter.Login">@projecter.ProjectOrganisation</option>
+    }
+    </select>
+    </div>
+
+<br />
+<button type="submit">Add project</button>
+</form>
+
+
+
+
+
+@code {
+    [Parameter]
+    public string? department { get; set; }
+
+    List<Document>? docs;
+    List<Document>? projecterDocs;
+    Form projecterForm;
+
+    string selectedProjecter;
+    string selectedDeveloper;
+    string projectName;
+
+    protected override void OnInitialized()
+    {
+        docs = new();
+        projecterDocs = new();
+        projecterForm = new();
+        base.OnInitialized();
+
+        if(department == "Газификация")
+        {
+            foreach (var doc in defDoc.docsGas)
+            {
+                docs.Add(new Document
+                    {
+                        Name = doc,
+                        IsRequired = false,
+                        IsApproved = false
+                    });
+            }
+            foreach(var doc in defDoc.projecterDocs)
+            {
+                projecterDocs.Add(new Document
+                {
+                    Name = doc,
+                    IsRequired = false,
+                    IsApproved = false
+                });
+            }
+            foreach(var field in defDoc.projecterFormGas)
+            {
+                projecterForm.FormFields.Add(new FormField(field, ""));
+            }
+
+        }
+        else
+        {
+            foreach (var doc in defDoc.docsWater)
+            {
+                docs.Add(new Document
+                {
+                    Name = doc,
+                    IsRequired = false,
+                    IsApproved = false
+                });
+            }
+
+            foreach (var doc in defDoc.projecterDocs)
+            {
+                projecterDocs.Add(new Document
+                    {
+                        Name = doc,
+                        IsRequired = false,
+                        IsApproved = false
+                    });
+            }
+
+            foreach (var field in defDoc.projecterFormWater)
+            {
+                if (defDoc.FormHeaders.Contains(field))
+                {
+                    continue;
+                }
+                projecterForm.FormFields.Add(new FormField(field, ""));
+            }
+        }
+    }
+    private void Check(Document doc)
+    {
+
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
+    {
+
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
+            Stream stream = file.OpenReadStream(2000000);
+            await fileSysServ.UploadDocumentToDb(stream, file.Name);
+            stream.Dispose();
+
+            doc.data = GetByteArray(file.Name);
+            Download(doc);
+        }
+    }
+
+    private byte[] GetByteArray(string file)
+    {
+        return fileSysServ.DownloadDocumentFromDb(file);
+    }
+
+    public void Download(Document doc)
+    {
+    }
+
+    public void CloseComp()
+    {
+        if(selectedProjecter is null || selectedDeveloper is null)
+        {
+            JS.InvokeVoidAsync("alert", "Customer or developer aren't set!");
+            return;
+        }
+        fileSysServ.currentProject.Name = projectName;
+        fileSysServ.currentProject.ProjecterId = (mongoConnection.FindProjecterByLogin(selectedProjecter)).Id;
+        fileSysServ.currentProject.DeveloperId = (mongoConnection.FindDeveloperByLogin(selectedDeveloper)).Id;
+        fileSysServ.currentProject.CustomerId = (mongoConnection.FindCustomerByLogin(userService.currentUser.Login)).Id;
+        fileSysServ.currentProject.CreatedDate = DateTime.Now;
+        fileSysServ.currentProject.Documents = docs;
+        fileSysServ.currentProject.Form = projecterForm;
+
+        projectService.AddDocsToDataBase(docs);
+        projectService.AddToDataBase(projecterForm);
+        projectService.AddToDataBase(fileSysServ.currentProject);
+
+        nManager.NavigateTo("/projectsPage");
+    }
+}

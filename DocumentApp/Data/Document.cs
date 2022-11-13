@@ -6,9 +6,11 @@ namespace DocumentApp.Data
     public class Document
     {
         [BsonId]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
         public string? Name { get; set; }
-        public bool isRequired = false;
+        public string FileName { get; set; }
+        public bool IsRequired = false;
+        public bool IsApproved = false;
         public byte[]? data;
     }
 }

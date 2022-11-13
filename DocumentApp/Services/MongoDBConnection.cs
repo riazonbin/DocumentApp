@@ -84,6 +84,30 @@ namespace DocumentApp.Services
             return collection.Find(filter).FirstOrDefault();
         }
 
+        public Customer FindCustomerById(ObjectId id)
+        {
+            var filter = Builders<Customer>.Filter.Eq("_id", id);
+            var collection = _database.GetCollection<Customer>("CustomerCollection");
+            return collection.Find(filter).FirstOrDefault();
+        }
+
+        public Projecter FindProjecterById(ObjectId id)
+        {
+            var filter = Builders<Projecter>.Filter.Eq("_id", id);
+            var collection = _database.GetCollection<Projecter>("ProjecterCollection");
+            return collection.Find(filter).FirstOrDefault();
+        }
+
+        public Developer FindDeveloperById(ObjectId id)
+        {
+            var filter = Builders<Developer>.Filter.Eq("_id", id);
+            var collection = _database.GetCollection<Developer>("DeveloperCollection");
+            return collection.Find(filter).FirstOrDefault();
+        }
+
+
+
+
         public List<Customer> FindCustomers()
         {
             var filter = new BsonDocument();
@@ -130,10 +154,13 @@ namespace DocumentApp.Services
 
         public IMongoCollection<User> GetCollection()
         {
-            var client = new MongoClient("mongodb://localhost");
-            var database = client.GetDatabase("DocumentApp");
-
-            return database.GetCollection<User>("UserCollection");
+            return _database.GetCollection<User>("UserCollection");
         }
+
+        public List<Project> GetAllProjects()
+        {
+            return _database.GetCollection<Project>("ProjectCollection").Find(new BsonDocument()).ToList();
+        }
+
     }
 }

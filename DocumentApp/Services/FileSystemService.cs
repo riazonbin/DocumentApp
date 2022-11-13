@@ -75,37 +75,6 @@ namespace DocumentApp.Services
         //}
         #endregion
 
-        //public void GetImagesToProjectFolder()
-        //{
-        //    var images = _gridFS.Find(new BsonDocument()).ToList();
-        //    foreach (var image in images)
-        //    {
-        //        try
-        //        {
-        //            using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{image.Filename}", FileMode.CreateNew))
-        //            {
-        //                _gridFS.DownloadToStreamByName(image.Filename, fs);
-        //            }
-        //        }
-        //        catch (Exception)
-        //        {
-        //            _logger.LogError("Image already exists");
-        //        }
-
-        //    }
-        //}
-
-        //public List<string> FindFiles()
-        //{
-        //    var fileInfos = _gridFS.Find(new BsonDocument()).ToList();
-        //    var imageInfos = new List<string>();
-        //    foreach (var file in fileInfos)
-        //    {
-        //        imageInfos.Add(file.Filename);
-        //    }
-        //    return imageInfos;
-        //}
-
         public bool FileExists(string filename)
         {
             return _gridFS.Find(FilterDefinition<GridFSFileInfo>.Empty).ToEnumerable().Any(x => x.Filename == filename);

@@ -22,7 +22,7 @@ namespace DocumentApp.Data
         }
 
         [BsonId]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         [Required]
         public string? Login { get; set; }

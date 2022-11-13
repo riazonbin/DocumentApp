@@ -13,6 +13,7 @@ builder.Services.AddScoped<MongoDBConnection>();
 builder.Services.AddSingleton<FileSystemService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<DefaultDocument>();
+builder.Services.AddSingleton<ProjectService>();
 
 var app = builder.Build();
 

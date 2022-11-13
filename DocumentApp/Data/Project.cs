@@ -16,11 +16,10 @@ namespace DocumentApp.Data
 
         public Project()
         {
-            CreatedDate = DateTime.Now;
         }
 
         [BsonId]
-        public string Id { get; set; }
+        public ObjectId Id { get; set; }
 
         public string Name { get; set; }
 
@@ -28,6 +27,8 @@ namespace DocumentApp.Data
         public DateTime CreatedDate { get; set; }
 
         public List<Document> Documents { get; set; } = new List<Document>();
+
+        public Form Form { get; set; }
 
         public ObjectId CustomerId { get; set; }
 

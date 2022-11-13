@@ -5,6 +5,10 @@ namespace DocumentApp.Data
 {
     public class Customer : User
     {
+        public Customer()
+        {
+        }
+
         public Customer(string login, string password, string email, string telephone, RolesEnum role)
             : base(login, password, email, telephone, role)
         {

@@ -1,0 +1,104 @@
+﻿@inject DocumentApp.Defaults.DefaultDocument defDoc
+@using DocumentApp.Data
+@using DocumentApp.Services
+@using Microsoft.AspNetCore.Mvc
+@inject FileSystemService fileSysServ
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject IJSRuntime JS
+@inject UserService userService
+@inject NavigationManager nManager
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Doc name</th>
+            <th>Req</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var doc in docs)
+    {
+            <tr>
+                <td>@doc.Name</td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
+                <td><button class="btn btn-primary mb-3">Download</button></td>
+            </tr>
+    }
+    </tbody>
+</table>
+
+
+@code 
+{
+
+    List<Document>? docs;
+
+    string selectedProjecter;
+    string selectedDeveloper;
+    string projectName;
+
+    protected override void OnInitialized()
+    {
+        docs = new();
+        base.OnInitialized();
+
+
+        foreach (var doc in fileSysServ.currentProject.Documents)
+        {
+            docs.Add(new Document
+                {
+                    Name = doc.Name,
+                    IsRequired = false,
+                    IsApproved = false
+                });
+        }
+    }
+    private void Check(Document doc)
+    {
+
+    }
+
+    private async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
+    {
+
+        foreach (var file in e.GetMultipleFiles(e.FileCount))
+        {
+            Stream stream = file.OpenReadStream(2000000);
+            await fileSysServ.UploadDocumentToDb(stream, file.Name);
+            stream.Dispose();
+
+            doc.data = GetByteArray(file.Name);
+            Download(doc);
+        }
+    }
+
+    private byte[] GetByteArray(string file)
+    {
+        return fileSysServ.DownloadDocumentFromDb(file);
+    }
+
+    public void Download(Document doc)
+    {
+    }
+
+    public void CloseComp()
+    {
+        if (selectedProjecter is null || selectedDeveloper is null)
+        {
+            JS.InvokeVoidAsync("alert", "Customer or developer aren't set!");
+            return;
+        }
+        fileSysServ.currentProject.Name = projectName;
+        fileSysServ.currentProject.ProjecterId = (mongoConnection.FindProjecterByLogin(selectedProjecter)).Id;
+        fileSysServ.currentProject.DeveloperId = (mongoConnection.FindDeveloperByLogin(selectedDeveloper)).Id;
+        fileSysServ.currentProject.CustomerId = (mongoConnection.FindCustomerByLogin(userService.currentUser.Login)).Id;
+        fileSysServ.currentProject.CreatedDate = DateTime.Now;
+
+        mongoConnection.AddToDataBase(fileSysServ.currentProject);
+
+        nManager.NavigateTo("/projectsPage");
+    }
+}

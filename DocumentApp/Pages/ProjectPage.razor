@@ -13,8 +13,23 @@
 {
     customer =  mongoConnection.FindCustomerByLogin(userService.currentUser.Login);
 
-    <CustomerProject department="@customer.Department"></CustomerProject>
+    <CustomerNewProject department="@customer.Department"></CustomerNewProject>
 
+}
+
+@if (userService.currentUser.Role == Enums.RolesEnum.Developer)
+{
+    developer = mongoConnection.FindDeveloperByLogin(userService.currentUser.Login);
+
+    <CustomerNewProject department="@customer.Department"></CustomerNewProject>
+
+}
+
+@if (userService.currentUser.Role == Enums.RolesEnum.Projecter)
+{
+    projecter = mongoConnection.FindProjecterByLogin(userService.currentUser.Login);
+
+    <CustomerNewProject department="@customer.Department"></CustomerNewProject>
 }
 
 @code {
