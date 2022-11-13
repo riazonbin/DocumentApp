@@ -9,7 +9,7 @@
 @inject UserService userService
 @inject NavigationManager nManager
 
-@if(department == "Газификация")
+@if(department is not null)
 {
     <table class="table">
         <thead>
@@ -84,80 +84,6 @@
     UpdateFields();
 }
 
-
-@if(department == "Водоснабжение")
-{
-    <table class="table">
-            <thead>
-                <tr>
-                    <th>Doc name</th>
-                    <th>Req</th>
-                    <th>Approvement</th>
-                    <th>Download</th>
-                </tr>
-            </thead>
-        <tbody>
-        @foreach(var doc in docs)
-        {
-            <tr>
-                <td>@doc.Name</td>
-                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
-                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
-                <td><button class="btn btn-primary mb-3">Download</button></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Doc name</th>
-                <th>Requirement</th>
-                <th>Approvement</th>
-                <th>Download</th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var doc in projecterDocs)
-        {
-            <tr>
-                <td>@doc.Name</td>
-                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
-                <td><input type="checkbox" @bind-value="doc.IsApproved" /></td>
-                <td><button class="btn btn-primary mb-3">Download</button></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name of field</th>
-                <th>Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var field in testFields)
-            {
-                if (defDoc.FormHeaders.Contains(field.FieldName))
-                {
-                    projecterForm.FormFields.Remove(field);
-                    <tr>
-                        <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
-                    </tr>
-                    continue;
-                }
-                <tr>
-                    <td>@field.FieldName</td>
-                    <td><input disabled @bind="field.FieldValue"/></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    UpdateFields();
-}
 <form class="row g-3" onsubmit="@(() => CloseComp())">
 
     <div class="col-md-4">

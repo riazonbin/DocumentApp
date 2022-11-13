@@ -43,13 +43,6 @@ namespace DocumentApp.Services
         #endregion
 
         #region Download
-        //public void DownloadFileToProject(GridFSFileInfo file)
-        //{
-        //    using (FileStream fs = new FileStream($"{Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/documents/")}{file.Filename}", FileMode.CreateNew))
-        //    {
-        //        _gridFS.DownloadToStreamByName(file.Filename, fs);
-        //    }
-        //}
 
         public void DownloadDocumentToProject(Document document)
         {
