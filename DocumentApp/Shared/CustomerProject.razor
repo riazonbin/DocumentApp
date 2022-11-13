@@ -27,7 +27,7 @@
                     <td>@doc.FileName</td>
                     <td><input type="checkbox" @bind="doc.IsRequired" /></td>
                     <td><input type="checkbox" @bind="doc.IsApproved" /></td>
-                    <td><button class="btn btn-primary mb-3" @onclick="(() => Download(doc))">Download</button></td>
+                    <td><button class="btn btn-primary mb-3" @onclick="(() => fileSysServ.DownloadDocumentToProject(doc))">Download</button></td>
                 </tr>
         }
         </tbody>
@@ -52,7 +52,7 @@
                 <td>@doc.FileName</td>
                 <td><input type="checkbox" @bind="doc.IsRequired" /></td>
                 <td><input type="checkbox" @bind="doc.IsApproved" /></td>
-                <td><button class="btn btn-primary mb-3" @onclick="(() => Download(doc))">Download</button></td>
+                <td><button class="btn btn-primary mb-3" @onclick="(() => fileSysServ.DownloadDocumentToProject(doc))">Download</button></td>
             </tr>
         }
         </tbody>
@@ -103,21 +103,6 @@
     {
         base.OnInitialized();
         testFields = new();
-    }
-    private void Check(Document doc)
-    {
-
-    }
-
-    private byte[] GetByteArray(string file)
-    {
-        return fileSysServ.GetByteArrayFromFile(file);
-    }
-
-
-    public void Download(Document doc)
-    {
-        fileSysServ.DownloadDocumentToProject(doc);
     }
 
     public void CloseComp()

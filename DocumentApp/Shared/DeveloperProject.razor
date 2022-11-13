@@ -29,8 +29,8 @@
             <td>@doc.FileName</td>
             <td><input type="checkbox" disabled @bind="doc.IsRequired" /></td>
             <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
-            <td><button class="btn btn-primary mb-3" @onclick="(() => Download(doc))">Download</button></td>
-            <td><InputFile class="btn btn-primary mb-3" OnChange="((e) => LoadFiles(e, doc))">Upload</InputFile></td>
+            <td><button class="btn btn-primary mb-3" @onclick="(() => fileSysServ.DownloadDocumentToProject(doc))">Download</button></td>
+            <td><InputFile class="btn btn-primary mb-3" OnChange="((e) => fileSysServ.LoadFiles(e, doc))">Upload</InputFile></td>
         </tr>
     }
     </tbody>
@@ -47,34 +47,6 @@
     private void Check(Document doc)
     {
 
-    }
-
-    private byte[] GetByteArray(string file)
-    {
-        return fileSysServ.GetByteArrayFromFile(file);
-    }
-
-    private async Task LoadFiles(InputFileChangeEventArgs e, Document doc)
-    {
-
-        foreach (var file in e.GetMultipleFiles(e.FileCount))
-        {
-            Stream stream = file.OpenReadStream(2000000);
-            await fileSysServ.UploadDocumentToDb(stream, file.Name);
-            stream.Dispose();
-
-            doc.FileName = file.Name;
-            doc.data = GetByteArray(file.Name);
-        }
-    }
-
-    public void Download(Document doc)
-    {
-        try
-        {
-            fileSysServ.DownloadDocumentToProject(doc);
-        }
-        catch { }
     }
 
     public void CloseComp()
