@@ -1,0 +1,88 @@
+﻿@inject DocumentApp.Defaults.DefaultDocument defDoc
+@using DocumentApp.Data
+@using DocumentApp.Services
+@using Microsoft.AspNetCore.Mvc
+@inject FileSystemService fileSysServ
+@inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject DocumentApp.Services.ProjectService projectService
+@inject IJSRuntime JS
+@inject UserService userService
+@inject NavigationManager nManager
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Doc name</th>
+            <th>Requirement</th>
+            <th>Approvement</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var doc in fileSysServ.currentProject.ProjecterDocuments)
+    {
+        <tr>
+            <td>@doc.Name</td>
+            <td><input type="checkbox" @bind="doc.IsRequired" /></td>
+            <td><input type="checkbox" @bind="doc.IsApproved" /></td>
+            <td><button class="btn btn-primary mb-3">Download</button></td>
+            <td><button class="btn btn-primary mb-3">Upload</button></td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name of field</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var field in fileSysServ.currentProject.Form.FormFields)
+    {
+        if(currentDepartment == "Газификация")
+        {
+            if (!defDoc.projecterFormGas.Contains(field.FieldName))
+            {
+                <tr>
+                    <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
+                </tr>
+                continue;
+            }
+
+            <tr>
+                <td>@field.FieldName</td>
+                <td><input disabled @bind="field.FieldValue"/></td>
+            </tr>
+        }
+        else
+        {
+            if (!defDoc.projecterFormWater.Contains(field.FieldName))
+            {
+                <tr>
+                    <td align="center" colspan="2"><strong>@field.FieldName</strong></td>
+                </tr>
+                continue;
+            }
+
+            <tr>
+                <td>@field.FieldName</td>
+                <td><input disabled @bind="field.FieldValue"/></td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+
+@code {
+    string currentDepartment;
+
+    protected override void OnInitialized()
+    {
+        currentDepartment = mongoConnection.FindCustomerById(fileSysServ.currentProject.CustomerId).Department;
+        base.OnInitialized();
+    }
+}

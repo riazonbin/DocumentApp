@@ -208,6 +208,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        fileSysServ.currentProject = new Project();
         docs = new();
         projecterDocs = new();
         projecterForm = new();
@@ -323,8 +324,10 @@
         fileSysServ.currentProject.CreatedDate = DateTime.Now;
         fileSysServ.currentProject.Documents = docs;
         fileSysServ.currentProject.Form = projecterForm;
+        fileSysServ.currentProject.ProjecterDocuments = projecterDocs;
 
         projectService.AddDocsToDataBase(docs);
+        projectService.AddProjecterDocsToDataBase(projecterDocs);
         projectService.AddToDataBase(projecterForm);
         projectService.AddToDataBase(fileSysServ.currentProject);
 

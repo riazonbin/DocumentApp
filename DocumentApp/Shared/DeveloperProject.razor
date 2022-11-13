@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Mvc
 @inject FileSystemService fileSysServ
 @inject DocumentApp.Services.MongoDBConnection mongoConnection
+@inject ProjectService projectService
 @inject IJSRuntime JS
 @inject UserService userService
 @inject NavigationManager nManager
@@ -13,19 +14,22 @@
     <thead>
         <tr>
             <th>Doc name</th>
-            <th>Req</th>
+            <th>Requirement</th>
+            <th>Approvement</th>
             <th>Download</th>
+            <th>Upload</th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var doc in docs)
+    @foreach (var doc in fileSysServ.currentProject.Documents)
     {
-            <tr>
-                <td>@doc.Name</td>
-                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
-                <td><input type="checkbox" @bind-value="doc.IsRequired" /></td>
-                <td><button class="btn btn-primary mb-3">Download</button></td>
-            </tr>
+        <tr>
+            <td>@doc.Name</td>
+            <td><input type="checkbox" disabled @bind="doc.IsRequired" /></td>
+                <td><input type="checkbox" disabled @bind="doc.IsApproved" /></td>
+            <td><button class="btn btn-primary mb-3" >Upload</button></td>
+            <td><button class="btn btn-primary mb-3">Download</button></td>
+        </tr>
     }
     </tbody>
 </table>
@@ -35,10 +39,6 @@
 {
 
     List<Document>? docs;
-
-    string selectedProjecter;
-    string selectedDeveloper;
-    string projectName;
 
     protected override void OnInitialized()
     {
@@ -86,19 +86,9 @@
 
     public void CloseComp()
     {
-        if (selectedProjecter is null || selectedDeveloper is null)
-        {
-            JS.InvokeVoidAsync("alert", "Customer or developer aren't set!");
-            return;
-        }
-        fileSysServ.currentProject.Name = projectName;
-        fileSysServ.currentProject.ProjecterId = (mongoConnection.FindProjecterByLogin(selectedProjecter)).Id;
-        fileSysServ.currentProject.DeveloperId = (mongoConnection.FindDeveloperByLogin(selectedDeveloper)).Id;
-        fileSysServ.currentProject.CustomerId = (mongoConnection.FindCustomerByLogin(userService.currentUser.Login)).Id;
-        fileSysServ.currentProject.CreatedDate = DateTime.Now;
+        fileSysServ.currentProject.Documents = docs;
 
-        mongoConnection.AddToDataBase(fileSysServ.currentProject);
-
+        projectService.UpdateProjectInDataBase(fileSysServ.currentProject);
         nManager.NavigateTo("/projectsPage");
     }
 }

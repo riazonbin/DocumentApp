@@ -18,6 +18,12 @@ namespace DocumentApp.Services
             var collection = _database.GetCollection<Project>("ProjectCollection");
             collection.InsertOne(project);
         }
+        public void UpdateProjectInDataBase(Project project)
+        {
+            var filter = Builders<Project>.Filter.Eq("_id", project.Id);
+            var collection = _database.GetCollection<Project>("ProjectCollection");
+            collection.ReplaceOne(filter, project);
+        }
 
         public void AddToDataBase(Form form)
         {
@@ -40,6 +46,15 @@ namespace DocumentApp.Services
         {
             var collection = _database.GetCollection<Document>("DocumentCollection");
             foreach(var doc in docs)
+            {
+                collection.InsertOne(doc);
+            }
+        }
+
+        public void AddProjecterDocsToDataBase(List<Document> docs)
+        {
+            var collection = _database.GetCollection<Document>("ProjecterDocumentCollection");
+            foreach (var doc in docs)
             {
                 collection.InsertOne(doc);
             }

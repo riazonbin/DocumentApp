@@ -28,6 +28,8 @@ namespace DocumentApp.Data
 
         public List<Document> Documents { get; set; } = new List<Document>();
 
+        public List<Document> ProjecterDocuments { get; set; } = new List<Document>();
+
         public Form Form { get; set; }
 
         public ObjectId CustomerId { get; set; }
