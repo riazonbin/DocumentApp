@@ -30,12 +30,15 @@ namespace DocumentApp.Data
         public string DeveloperOrganisation { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{13}$", ErrorMessage = "Формат ОГРН : 13 цифр!")]
         public string OGRN { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{12}$", ErrorMessage = "Формат ИНН : 12 цифр!")]
         public string INN { get; set; }
 
         [Required]
+        [RegularExpression(@"^\d{9}$", ErrorMessage = "Формат КПП : 9 цифр!")]
         public string KPP { get; set; }
 
         [Required]
