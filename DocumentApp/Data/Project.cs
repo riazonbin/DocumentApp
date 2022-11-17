@@ -12,6 +12,7 @@ namespace DocumentApp.Data
             DeveloperId = developerId;
             ProjecterId = projecterId;
             CreatedDate = DateTime.Now;
+            Form = new Form();
         }
 
         public Project()
