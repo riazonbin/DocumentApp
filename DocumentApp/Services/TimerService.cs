@@ -2,10 +2,11 @@
 {
     public class TimerService
     {
-        public static TimeSpan currentTimerValue;
-        public bool isStopWatchRunning = false;
         public string displayText = "";
         public TimeSpan timeLeft = new TimeSpan(0, 0, 10);
+        public delegate void RefreshActionDelegate();
+        public RefreshActionDelegate RefreshAction;
+        public bool isStarted;
 
         public void AddMinute()
         {
@@ -14,10 +15,14 @@
 
         public async Task StartTimer()
         {
-            while (timeLeft > new TimeSpan())
+            isStarted = true;
+            displayText = "";
+
+            while (timeLeft > new TimeSpan(0, 0, 0))
             {
                 await Task.Delay(1000);
                 timeLeft = timeLeft.Subtract(new TimeSpan(0, 0, 1));
+                RefreshAction();
             }
             await ShowTimeExpired();
         }
@@ -25,6 +30,7 @@
         public Task ShowTimeExpired()
         {
             displayText = "time expired";
+            isStarted= false;
             return Task.CompletedTask;
         }
     }

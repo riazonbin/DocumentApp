@@ -52,9 +52,13 @@ else
     bool isLoading = false;
     bool isCorrectUser = true;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task<Task> OnInitializedAsync()
     {
-        timerService.StartTimer();
+        timerService.RefreshAction = StateHasChanged;
+        if(!timerService.isStarted)
+        {
+            await timerService.StartTimer();
+        }
         return base.OnInitializedAsync();
     }
 
