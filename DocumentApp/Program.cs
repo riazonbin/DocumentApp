@@ -14,6 +14,7 @@ builder.Services.AddSingleton<FileSystemService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<DefaultDocument>();
 builder.Services.AddSingleton<ProjectService>();
+builder.Services.AddSingleton<TimerService>();
 
 var app = builder.Build();
 

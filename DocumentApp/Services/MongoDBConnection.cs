@@ -48,7 +48,7 @@ namespace DocumentApp.Services
             var log2 = FindDeveloperByLogin(login);
             var log3 = FindProjecterByLogin(login);
 
-            if(log1 != null)
+            if (log1 != null)
             {
                 return log1;
             }
